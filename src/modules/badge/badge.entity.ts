@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm';
-import { People } from '../people/people.entity';
+import { People } from '../people/entities/people.entity';
 
 @Entity()
 export class Badge {
