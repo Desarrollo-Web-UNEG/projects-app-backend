@@ -16,13 +16,14 @@ import {
   Judgement,
 } from './modules';
 import { People } from './modules/people/entities/people.entity';
+import { AuthModule } from './modules/auth/auth.module';
 import { PeopleModule } from './modules/people/people.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
-  TypeOrmModule.forRoot({
-    type: 'postgres',
+    TypeOrmModule.forRoot({
+      type: 'postgres',
       host: process.env.POSTGRES_HOST,
       port: parseInt(process.env.POSTGRES_PORT || '5432'),
       username: process.env.POSTGRES_USERNAME,
@@ -57,6 +58,7 @@ import { PeopleModule } from './modules/people/people.module';
       Evaluation,
       Judgement,
     ]),
+    AuthModule,
     PeopleModule,
   ],
   controllers: [AppController],
