@@ -3,12 +3,25 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import {
+  Badge,
+  Project,
+  AcademicPeriod,
+  Scores,
+  Comments,
+  Subject,
+  Technology,
+  Category,
+  Evaluation,
+  Judgement,
+} from './modules';
+import { People } from './modules/people/entities/people.entity';
+import { AuthModule } from './modules/auth/auth.module';
+import { PeopleModule } from './modules/people/people.module';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
+    ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST,
@@ -18,10 +31,35 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       database: process.env.POSTGRES_DATABASE,
       autoLoadEntities: true,
       synchronize: true,
-      ssl: {
-        rejectUnauthorized: false
-      }
+      entities: [
+        Badge,
+        People,
+        Project,
+        AcademicPeriod,
+        Scores,
+        Comments,
+        Subject,
+        Technology,
+        Category,
+        Evaluation,
+        Judgement,
+      ],
     }),
+    TypeOrmModule.forFeature([
+      Badge,
+      People,
+      Project,
+      AcademicPeriod,
+      Scores,
+      Comments,
+      Subject,
+      Technology,
+      Category,
+      Evaluation,
+      Judgement,
+    ]),
+    AuthModule,
+    PeopleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
