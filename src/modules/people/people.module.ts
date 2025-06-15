@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PeopleController } from './people.controller';
 import { PeopleService } from './people.service';
-import { People } from './entities/people.entity';
+import { People } from './people.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([People])],

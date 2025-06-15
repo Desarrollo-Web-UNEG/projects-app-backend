@@ -18,6 +18,7 @@ import {
 import { People } from './modules/people/entities/people.entity';
 import { AuthModule } from './modules/auth/auth.module';
 import { PeopleModule } from './modules/people/people.module';
+import { SubjectModule } from './modules/subject/subject.module';
 
 @Module({
   imports: [
@@ -60,6 +61,7 @@ import { PeopleModule } from './modules/people/people.module';
     ]),
     AuthModule,
     PeopleModule,
+    SubjectModule,
   ],
   controllers: [AppController],
   providers: [AppService],

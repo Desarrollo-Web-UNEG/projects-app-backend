@@ -1,17 +1,20 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
 import { Project } from '../project/project.entity';
 
-@Entity()
+@Entity('subject')
 export class Subject {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
   name: string;
 
-  @Column({ nullable: true })
+  @Column()
   description: string;
+
+  @Column()
+  isActive: boolean;
 
   @OneToMany(() => Project, (project) => project.subject)
   projects: Project[];
-} 
+}

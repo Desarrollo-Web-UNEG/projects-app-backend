@@ -1,5 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, ManyToMany, JoinTable } from 'typeorm';
-import { People } from '../people/entities/people.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToOne,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
+import { People } from '../people/people.entity';
 import { Scores } from '../scores/scores.entity';
 import { Comments } from '../comments/comments.entity';
 import { Subject } from '../subject/subject.entity';
@@ -46,4 +54,4 @@ export class Project {
 
   @OneToMany(() => Evaluation, (evaluation) => evaluation.project)
   evaluations: Evaluation[];
-} 
+}
