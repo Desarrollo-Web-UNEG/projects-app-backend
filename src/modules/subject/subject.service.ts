@@ -8,7 +8,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Subject } from './subject.entity';
 import { CreateSubjectDto, UpdateSubjectDto } from './subject.dto';
-import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class SubjectService {
@@ -39,15 +38,17 @@ export class SubjectService {
   async findAll(): Promise<Subject[]> {
     return await this.subjectRepository.find({
       select: {
-        isActive: true,
+        id: true,
         name: true,
+        description: true,
+        isActive: true,
       },
     });
   }
 
   async findById(id: string): Promise<Subject> {
     const subject = await this.subjectRepository.findOne({
-      where: { id, isActive: true },
+      where: { id },
     });
 
     if (!subject) {

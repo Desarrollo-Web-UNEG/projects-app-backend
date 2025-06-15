@@ -1,5 +1,11 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToMany, JoinTable } from 'typeorm';
-import { People } from '../people/entities/people.entity';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  ManyToMany,
+  JoinTable,
+} from 'typeorm';
+import { People } from '../people/people.entity';
 
 @Entity()
 export class Badge {
@@ -14,4 +20,4 @@ export class Badge {
 
   @ManyToMany(() => People, (people) => people.badges)
   people: People[];
-} 
+}
