@@ -23,9 +23,16 @@ import { AcademicPeriodModule } from './modules/academic-period/academic-period.
 import { ProjectModule } from './modules/project/project.module';
 import { CommentsModule } from './modules/comments/comments.module';
 
+/**
+ * AppModule
+ * Módulo raíz de la aplicación NestJS.
+ * Configura los módulos principales, la conexión a la base de datos y los controladores/servicios globales.
+ */
 @Module({
   imports: [
+    // Configura ConfigModule para cargar variables de entorno.
     ConfigModule.forRoot(),
+    // Configura la conexión principal a la base de datos PostgreSQL usando TypeORM.
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST,
@@ -49,6 +56,7 @@ import { CommentsModule } from './modules/comments/comments.module';
         Judgement,
       ],
     }),
+    // Registra entidades con TypeORM para que puedan ser utilizadas por los repositorios.
     TypeOrmModule.forFeature([
       Badge,
       People,
@@ -62,14 +70,17 @@ import { CommentsModule } from './modules/comments/comments.module';
       Evaluation,
       Judgement,
     ]),
+    // Módulos de la aplicación.
     AuthModule,
     PeopleModule,
     SubjectModule,
     AcademicPeriodModule,
     ProjectModule,
-    CommentsModule,
+    CommentsModule, // Módulo de comentarios para gestionar el CRUD de comentarios.
   ],
+  // Controladores globales de la aplicación.
   controllers: [AppController],
+  // Proveedores de servicios globales de la aplicación.
   providers: [AppService],
 })
 export class AppModule {}
