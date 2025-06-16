@@ -7,7 +7,7 @@ import { People } from '../people/people.entity';
 import { AcademicPeriod } from '../academic-period/academic-period.entity';
 import { Subject } from '../subject/subject.entity';
 import { Category } from '../category/category.entity';
-import { Technology } from '../technology/technology.entity';
+import { Technology } from '../technology/entitie/technology.entity';
 
 @Injectable()
 export class ProjectService {
@@ -37,24 +37,38 @@ export class ProjectService {
     } = createProjectDto;
 
     // Verificar que las entidades relacionadas existan
-    const people = await this.peopleRepository.findOne({ where: { id: peopleId } });
+    const people = await this.peopleRepository.findOne({
+      where: { id: peopleId },
+    });
     if (!people) {
       throw new NotFoundException(`Persona con ID ${peopleId} no encontrada`);
     }
 
-    const academicPeriod = await this.academicPeriodRepository.findOne({ where: { id: academicPeriodId } });
+    const academicPeriod = await this.academicPeriodRepository.findOne({
+      where: { id: academicPeriodId },
+    });
     if (!academicPeriod) {
-      throw new NotFoundException(`Período académico con ID ${academicPeriodId} no encontrado`);
+      throw new NotFoundException(
+        `Período académico con ID ${academicPeriodId} no encontrado`,
+      );
     }
 
-    const subject = await this.subjectRepository.findOne({ where: { id: subjectId } });
+    const subject = await this.subjectRepository.findOne({
+      where: { id: subjectId },
+    });
     if (!subject) {
-      throw new NotFoundException(`Asignatura con ID ${subjectId} no encontrada`);
+      throw new NotFoundException(
+        `Asignatura con ID ${subjectId} no encontrada`,
+      );
     }
 
-    const category = await this.categoryRepository.findOne({ where: { id: categoryId } });
+    const category = await this.categoryRepository.findOne({
+      where: { id: categoryId },
+    });
     if (!category) {
-      throw new NotFoundException(`Categoría con ID ${categoryId} no encontrada`);
+      throw new NotFoundException(
+        `Categoría con ID ${categoryId} no encontrada`,
+      );
     }
 
     const technologies = technologyIds
@@ -62,7 +76,9 @@ export class ProjectService {
       : [];
 
     if (technologyIds && technologies.length !== technologyIds.length) {
-      throw new NotFoundException('Una o más tecnologías no fueron encontradas');
+      throw new NotFoundException(
+        'Una o más tecnologías no fueron encontradas',
+      );
     }
 
     const project = this.projectRepository.create({
@@ -79,14 +95,26 @@ export class ProjectService {
 
   async findAll(): Promise<Project[]> {
     return this.projectRepository.find({
-      relations: ['people', 'academicPeriod', 'subject', 'category', 'technologies'],
+      relations: [
+        'people',
+        'academicPeriod',
+        'subject',
+        'category',
+        'technologies',
+      ],
     });
   }
 
   async findById(id: number): Promise<Project> {
     const project = await this.projectRepository.findOne({
       where: { id },
-      relations: ['people', 'academicPeriod', 'subject', 'category', 'technologies'],
+      relations: [
+        'people',
+        'academicPeriod',
+        'subject',
+        'category',
+        'technologies',
+      ],
     });
 
     if (!project) {
@@ -96,7 +124,10 @@ export class ProjectService {
     return project;
   }
 
-  async update(id: number, updateProjectDto: UpdateProjectDto): Promise<Project> {
+  async update(
+    id: number,
+    updateProjectDto: UpdateProjectDto,
+  ): Promise<Project> {
     const project = await this.findById(id);
 
     const {
@@ -109,24 +140,38 @@ export class ProjectService {
     } = updateProjectDto;
 
     // Verificar que las entidades relacionadas existan
-    const people = await this.peopleRepository.findOne({ where: { id: peopleId } });
+    const people = await this.peopleRepository.findOne({
+      where: { id: peopleId },
+    });
     if (!people) {
       throw new NotFoundException(`Persona con ID ${peopleId} no encontrada`);
     }
 
-    const academicPeriod = await this.academicPeriodRepository.findOne({ where: { id: academicPeriodId } });
+    const academicPeriod = await this.academicPeriodRepository.findOne({
+      where: { id: academicPeriodId },
+    });
     if (!academicPeriod) {
-      throw new NotFoundException(`Período académico con ID ${academicPeriodId} no encontrado`);
+      throw new NotFoundException(
+        `Período académico con ID ${academicPeriodId} no encontrado`,
+      );
     }
 
-    const subject = await this.subjectRepository.findOne({ where: { id: subjectId } });
+    const subject = await this.subjectRepository.findOne({
+      where: { id: subjectId },
+    });
     if (!subject) {
-      throw new NotFoundException(`Asignatura con ID ${subjectId} no encontrada`);
+      throw new NotFoundException(
+        `Asignatura con ID ${subjectId} no encontrada`,
+      );
     }
 
-    const category = await this.categoryRepository.findOne({ where: { id: categoryId } });
+    const category = await this.categoryRepository.findOne({
+      where: { id: categoryId },
+    });
     if (!category) {
-      throw new NotFoundException(`Categoría con ID ${categoryId} no encontrada`);
+      throw new NotFoundException(
+        `Categoría con ID ${categoryId} no encontrada`,
+      );
     }
 
     const technologies = technologyIds
@@ -134,7 +179,9 @@ export class ProjectService {
       : [];
 
     if (technologyIds && technologies.length !== technologyIds.length) {
-      throw new NotFoundException('Una o más tecnologías no fueron encontradas');
+      throw new NotFoundException(
+        'Una o más tecnologías no fueron encontradas',
+      );
     }
 
     Object.assign(project, {
@@ -153,4 +200,4 @@ export class ProjectService {
     const project = await this.findById(id);
     await this.projectRepository.remove(project);
   }
-} 
+}

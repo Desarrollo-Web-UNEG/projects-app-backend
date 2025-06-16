@@ -21,6 +21,7 @@ import { PeopleModule } from './modules/people/people.module';
 import { SubjectModule } from './modules/subject/subject.module';
 import { AcademicPeriodModule } from './modules/academic-period/academic-period.module';
 import { ProjectModule } from './modules/project/project.module';
+import { TechnologyModule } from './modules/technology/technology.module';
 
 @Module({
   imports: [
@@ -66,6 +67,7 @@ import { ProjectModule } from './modules/project/project.module';
     SubjectModule,
     AcademicPeriodModule,
     ProjectModule,
+    TechnologyModule,
   ],
   controllers: [AppController],
   providers: [AppService],
