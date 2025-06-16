@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ProjectController } from './project.controller';
-import { ProjectService } from './project.service';
-import { Project } from './project.entity';
-import { People } from '../people/people.entity';
-import { AcademicPeriod } from '../academic-period/academic-period.entity';
-import { Subject } from '../subject/subject.entity';
+import { ProjectController } from './controllers/project.controller';
+import { ProjectService, ProjectValidatorService } from './services';
+import { Project } from './entities/project.entity';
+import { People } from '../people/entities';
+import { AcademicPeriod } from '../academic-period/entities/academic-period.entity';
+import { Subject } from '../subject/entities/subject.entity';
 import { Category } from '../category/category.entity';
 import { Technology } from '../technology/technology.entity';
 
@@ -21,7 +21,7 @@ import { Technology } from '../technology/technology.entity';
     ]),
   ],
   controllers: [ProjectController],
-  providers: [ProjectService],
+  providers: [ProjectService, ProjectValidatorService],
   exports: [ProjectService],
 })
 export class ProjectModule {} 

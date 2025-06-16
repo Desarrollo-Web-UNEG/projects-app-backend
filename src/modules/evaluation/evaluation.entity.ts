@@ -1,7 +1,7 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Project } from '../project/project.entity';
-import { People } from '../people/people.entity';
-import { Judgement } from '../judgement/judgement.entity';
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, ManyToMany } from 'typeorm';
+import { Project } from '../project/entities/project.entity';
+import { People } from '../people/entities/people.entity';
+import { Judgement } from '../judgement/entities/judgement.entity';
 
 @Entity()
 export class Evaluation {
@@ -23,6 +23,6 @@ export class Evaluation {
   @ManyToOne(() => People, (people) => people.evaluations)
   evaluator: People;
 
-  @ManyToOne(() => Judgement, (judgement) => judgement.evaluations)
-  judgement: Judgement;
+  @ManyToMany(() => Judgement, (judgement) => judgement.evaluations)
+  judgements: Judgement[];
 }

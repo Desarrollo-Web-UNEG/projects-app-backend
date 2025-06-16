@@ -15,12 +15,14 @@ import {
   Evaluation,
   Judgement,
 } from './modules';
-import { People } from './modules/people/people.entity';
+import { People } from './modules/people/entities';
 import { AuthModule } from './modules/auth/auth.module';
 import { PeopleModule } from './modules/people/people.module';
 import { SubjectModule } from './modules/subject/subject.module';
 import { AcademicPeriodModule } from './modules/academic-period/academic-period.module';
 import { ProjectModule } from './modules/project/project.module';
+import { JudgementModule } from './modules/judgement/judgement.module';
+import { ScoresModule } from './modules/scores/scores.module';
 
 @Module({
   imports: [
@@ -66,6 +68,8 @@ import { ProjectModule } from './modules/project/project.module';
     SubjectModule,
     AcademicPeriodModule,
     ProjectModule,
+    JudgementModule,
+    ScoresModule,
   ],
   controllers: [AppController],
   providers: [AppService],

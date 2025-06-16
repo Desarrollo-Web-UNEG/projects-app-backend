@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Project } from '../project/project.entity';
+import { Project } from '../project/entities/project.entity';
 
 @Entity()
 export class Scores {
