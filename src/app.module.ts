@@ -20,6 +20,7 @@ import { AuthModule } from './modules/auth/auth.module';
 import { PeopleModule } from './modules/people/people.module';
 import { SubjectModule } from './modules/subject/subject.module';
 import { AcademicPeriodModule } from './modules/academic-period/academic-period.module';
+import { ProjectModule } from './modules/project/project.module';
 
 @Module({
   imports: [
@@ -64,6 +65,7 @@ import { AcademicPeriodModule } from './modules/academic-period/academic-period.
     PeopleModule,
     SubjectModule,
     AcademicPeriodModule,
+    ProjectModule,
   ],
   controllers: [AppController],
   providers: [AppService],
