@@ -3,11 +3,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ProjectController } from './project.controller';
 import { ProjectService } from './project.service';
 import { Project } from './project.entity';
-import { People } from '../people/people.entity';
+import { People } from '../people/entities/people.entity';
 import { AcademicPeriod } from '../academic-period/academic-period.entity';
 import { Subject } from '../subject/subject.entity';
 import { Category } from '../category/category.entity';
-import { Technology } from '../technology/technology.entity';
+import { Technology } from '../technology/entities/technology.entity';
 
 @Module({
   imports: [
@@ -24,4 +24,4 @@ import { Technology } from '../technology/technology.entity';
   providers: [ProjectService],
   exports: [ProjectService],
 })
-export class ProjectModule {} 
+export class ProjectModule {}

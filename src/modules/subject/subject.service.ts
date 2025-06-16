@@ -46,7 +46,7 @@ export class SubjectService {
     });
   }
 
-  async findById(id: string): Promise<Subject> {
+  async findById(id: number): Promise<Subject> {
     const subject = await this.subjectRepository.findOne({
       where: { id },
     });
@@ -60,19 +60,17 @@ export class SubjectService {
 
   async findByName(name: string): Promise<Subject> {
     const subject = await this.subjectRepository.findOne({
-      where: { name, isActive: true },
+      where: { name },
     });
 
     if (!subject) {
-      throw new NotFoundException(
-        `No se encuentra materia con el nombre ${name}`,
-      );
+      throw new NotFoundException('Materia no encontrada');
     }
 
     return subject;
   }
 
-  async updateById(id: string, changes: UpdateSubjectDto): Promise<Subject> {
+  async updateById(id: number, changes: UpdateSubjectDto): Promise<Subject> {
     const subject = await this.findById(id);
 
     if (!subject) {
@@ -80,7 +78,9 @@ export class SubjectService {
     }
 
     if (changes.name && changes.name !== subject.name) {
-      const existingSubject = await this.findByName(changes.name);
+      const existingSubject = await this.subjectRepository.findOne({
+        where: { name: changes.name },
+      });
       if (existingSubject) {
         throw new ConflictException(
           `El nombre de la materia ${changes.name} ya esta registrado`,
@@ -92,7 +92,7 @@ export class SubjectService {
     return await this.subjectRepository.save(subject);
   }
 
-  async deleteById(id: string): Promise<string> {
+  async deleteById(id: number): Promise<string> {
     const subject = await this.findById(id);
 
     if (!subject) {

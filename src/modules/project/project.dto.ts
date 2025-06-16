@@ -1,4 +1,11 @@
-import { IsString, IsNotEmpty, IsOptional, IsUUID, IsArray, IsNumber } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsOptional,
+  IsUUID,
+  IsArray,
+  IsNumber,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateProjectDto {
@@ -27,10 +34,10 @@ export class CreateProjectDto {
   @ApiProperty()
   academicPeriodId: number;
 
-  @IsUUID()
+  @IsNumber()
   @IsNotEmpty()
   @ApiProperty()
-  subjectId: string;
+  subjectId: number;
 
   @IsNumber()
   @IsNotEmpty()
@@ -44,4 +51,4 @@ export class CreateProjectDto {
   technologyIds?: number[];
 }
 
-export class UpdateProjectDto extends CreateProjectDto {} 
+export class UpdateProjectDto extends CreateProjectDto {}

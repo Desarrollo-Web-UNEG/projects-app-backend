@@ -3,7 +3,7 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProjectService } from './project.service';
 import { Project } from './project.entity';
-import { People } from '../people/people.entity';
+import { People } from '../people/entities/people.entity';
 import { AcademicPeriod } from '../academic-period/academic-period.entity';
 import { Subject } from '../subject/subject.entity';
 import { Category } from '../category/category.entity';
@@ -66,15 +66,27 @@ describe('ProjectService', () => {
     }).compile();
 
     service = module.get<ProjectService>(ProjectService);
-    projectRepository = module.get<Repository<Project>>(getRepositoryToken(Project));
-    peopleRepository = module.get<Repository<People>>(getRepositoryToken(People));
-    academicPeriodRepository = module.get<Repository<AcademicPeriod>>(getRepositoryToken(AcademicPeriod));
-    subjectRepository = module.get<Repository<Subject>>(getRepositoryToken(Subject));
-    categoryRepository = module.get<Repository<Category>>(getRepositoryToken(Category));
-    technologyRepository = module.get<Repository<Technology>>(getRepositoryToken(Technology));
+    projectRepository = module.get<Repository<Project>>(
+      getRepositoryToken(Project),
+    );
+    peopleRepository = module.get<Repository<People>>(
+      getRepositoryToken(People),
+    );
+    academicPeriodRepository = module.get<Repository<AcademicPeriod>>(
+      getRepositoryToken(AcademicPeriod),
+    );
+    subjectRepository = module.get<Repository<Subject>>(
+      getRepositoryToken(Subject),
+    );
+    categoryRepository = module.get<Repository<Category>>(
+      getRepositoryToken(Category),
+    );
+    technologyRepository = module.get<Repository<Technology>>(
+      getRepositoryToken(Technology),
+    );
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
-}); 
+});

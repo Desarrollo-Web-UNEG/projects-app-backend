@@ -13,7 +13,7 @@ import { CreateSubjectDto, UpdateSubjectDto } from './subject.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { UserType } from '../people/people.entity';
+import { UserType } from '../people/entities/people.entity';
 
 @Controller('subjects')
 export class SubjectController {
@@ -34,21 +34,21 @@ export class SubjectController {
 
   @UseGuards(JwtAuthGuard)
   @Get(':id')
-  async findbyId(@Param('id') id: string) {
+  async findbyId(@Param('id') id: number) {
     return this.subjectService.findById(id);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserType.ADMIN)
   @Put(':id')
-  async updateById(@Param('id') id: string, @Body() changes: UpdateSubjectDto) {
+  async updateById(@Param('id') id: number, @Body() changes: UpdateSubjectDto) {
     return this.subjectService.updateById(id, changes);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserType.ADMIN)
   @Delete(':id')
-  async deleteById(@Param('id') id: string) {
+  async deleteById(@Param('id') id: number) {
     return this.subjectService.deleteById(id);
   }
 }

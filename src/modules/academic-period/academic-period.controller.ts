@@ -9,11 +9,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AcademicPeriodService } from './academic-period.service';
-import { CreateAcademicPeriodDto, UpdateAcademicPeriodDto } from './academic-period.dto';
+import {
+  CreateAcademicPeriodDto,
+  UpdateAcademicPeriodDto,
+} from './academic-period.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { UserType } from '../people/people.entity';
+import { UserType } from '../people/entities/people.entity';
 
 @Controller('academic-periods')
 export class AcademicPeriodController {
@@ -41,7 +44,10 @@ export class AcademicPeriodController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserType.ADMIN)
   @Put(':id')
-  async update(@Param('id') id: string, @Body() updateDto: UpdateAcademicPeriodDto) {
+  async update(
+    @Param('id') id: string,
+    @Body() updateDto: UpdateAcademicPeriodDto,
+  ) {
     return this.academicPeriodService.update(+id, updateDto);
   }
 
@@ -51,4 +57,4 @@ export class AcademicPeriodController {
   async delete(@Param('id') id: string) {
     return this.academicPeriodService.delete(+id);
   }
-} 
+}

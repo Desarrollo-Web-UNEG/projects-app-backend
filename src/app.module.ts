@@ -15,7 +15,7 @@ import {
   Evaluation,
   Judgement,
 } from './modules';
-import { People } from './modules/people/people.entity';
+import { People } from './modules/people/entities/people.entity';
 import { AuthModule } from './modules/auth/auth.module';
 import { PeopleModule } from './modules/people/people.module';
 import { SubjectModule } from './modules/subject/subject.module';

@@ -14,7 +14,7 @@ import { RegisterPeopleDto, UpdatePeopleDto } from './dto/register-people.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { UserType } from './people.entity';
+import { UserType } from './entities/people.entity';
 
 @Controller('people')
 export class PeopleController {
