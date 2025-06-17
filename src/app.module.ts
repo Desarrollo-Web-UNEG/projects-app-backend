@@ -25,10 +25,18 @@ import { JudgementModule } from './modules/judgement/judgement.module';
 import { ScoresModule } from './modules/scores/scores.module';
 import { CategoryModule } from './modules/category/category.module';
 
+import { CommentsModule } from './modules/comments/comments.module';
 
+/**
+ * AppModule
+ * Módulo raíz de la aplicación NestJS.
+ * Configura los módulos principales, la conexión a la base de datos y los controladores/servicios globales.
+ */
 @Module({
   imports: [
+    // Configura ConfigModule para cargar variables de entorno.
     ConfigModule.forRoot(),
+    // Configura la conexión principal a la base de datos PostgreSQL usando TypeORM.
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST,
@@ -52,6 +60,7 @@ import { CategoryModule } from './modules/category/category.module';
         Judgement,
       ],
     }),
+    // Registra entidades con TypeORM para que puedan ser utilizadas por los repositorios.
     TypeOrmModule.forFeature([
       Badge,
       People,
@@ -65,6 +74,7 @@ import { CategoryModule } from './modules/category/category.module';
       Evaluation,
       Judgement,
     ]),
+    // Módulos de la aplicación.
     AuthModule,
     PeopleModule,
     SubjectModule,
@@ -73,8 +83,11 @@ import { CategoryModule } from './modules/category/category.module';
     JudgementModule,
     ScoresModule,
     CategoryModule,
+    CommentsModule, // Módulo de comentarios para gestionar el CRUD de comentarios.
   ],
+  // Controladores globales de la aplicación.
   controllers: [AppController],
+  // Proveedores de servicios globales de la aplicación.
   providers: [AppService],
 })
 export class AppModule {}

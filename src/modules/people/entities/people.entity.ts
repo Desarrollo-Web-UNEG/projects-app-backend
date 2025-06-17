@@ -12,6 +12,7 @@ import {
 import { Exclude } from 'class-transformer';
 import { Badge } from '../../badge/badge.entity';
 import { Project } from '../../project/entities/project.entity';
+import { Comments } from '../../comments/comments.entity';
 import { Evaluation } from '../../evaluation/evaluation.entity';
 
 export enum UserType {
@@ -94,6 +95,9 @@ export class People {
 
   @OneToMany(() => Project, (project) => project.people)
   projects: Project[];
+
+  @OneToMany(() => Comments, (comments) => comments.people)
+  comments: Comments[];
 
   @OneToMany(() => Evaluation, (evaluation) => evaluation.evaluator)
   evaluations: Evaluation[];
