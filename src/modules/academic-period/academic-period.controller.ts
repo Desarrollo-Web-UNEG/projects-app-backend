@@ -8,15 +8,15 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { AcademicPeriodService } from './services/academic-period.service';
+import { AcademicPeriodService } from '@academic-period/services/academic-period.service';
 import {
   CreateAcademicPeriodDto,
   UpdateAcademicPeriodDto,
-} from './dto/academic-period.dto';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../auth/guards/roles.guard';
-import { Roles } from '../auth/decorators/roles.decorator';
-import { UserType } from '../people/entities/people.entity';
+} from '@academic-period/dto/academic-period.dto';
+import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
+import { RolesGuard } from '@auth/guards/roles.guard';
+import { Roles } from '@auth/decorators/roles.decorator';
+import { UserType } from '@people/entities/people.entity';
 
 @Controller('academic-periods')
 export class AcademicPeriodController {

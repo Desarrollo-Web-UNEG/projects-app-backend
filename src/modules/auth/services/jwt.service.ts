@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { People } from '../../people/entities/people.entity';
+import { People } from '@people/entities/people.entity';
 
 /**
  * Servicio para el manejo de tokens JWT

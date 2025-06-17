@@ -5,8 +5,8 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { Project } from '../project/entities/project.entity';
-import { People } from '../people/entities/people.entity';
+import { Project } from '@project/entities/project.entity';
+import { People } from '@people/entities/people.entity';
 
 /**
  * Entidad Comments

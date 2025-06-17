@@ -5,11 +5,8 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Technology } from '../entities/technology.entity';
-import {
-  CreateTechnologyDto,
-  UpdateTechnologyDto,
-} from '../dto/technology.dto';
+import { Technology } from '@technology/entities/technology.entity';
+import { CreateTechnologyDto } from '@technology/dto/technology.dto';
 
 @Injectable()
 export class TechnologyService {
@@ -69,10 +66,7 @@ export class TechnologyService {
     return technology;
   }
 
-  async updateById(
-    id: number,
-    changes: UpdateTechnologyDto,
-  ): Promise<Technology> {
+  async updateById(id: number, changes: Partial<CreateTechnologyDto>): Promise<Technology> {
     const technology = await this.findById(id);
 
     if (!technology) {

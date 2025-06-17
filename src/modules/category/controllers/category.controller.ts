@@ -7,12 +7,12 @@ import {
   Param,
   UseGuards,
 } from '@nestjs/common';
-import { CategoryService } from '../services/category.service';
-import { CreateCategoryDto, UpdateCategoryDto } from '../dto/category.dto';
-import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../../auth/guards/roles.guard';
-import { Roles } from '../../auth/decorators/roles.decorator';
-import { UserType } from '../../people/entities';
+import { CategoryService } from '@category/services/category.service';
+import { CreateCategoryDto, UpdateCategoryDto } from '@category/dto/category.dto';
+import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
+import { RolesGuard } from '@auth/guards/roles.guard';
+import { Roles } from '@auth/decorators/roles.decorator';
+import { UserType } from '@people/entities';
 
 @Controller('categories')
 export class CategoryController {

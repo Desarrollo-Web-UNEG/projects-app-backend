@@ -8,12 +8,12 @@ import {
   Body,
   UseGuards,
 } from '@nestjs/common';
-import { AdminService } from '../services';
-import { UpdatePeopleDto } from '../dto/register-people.dto';
-import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../../auth/guards/roles.guard';
-import { Roles } from '../../auth/decorators/roles.decorator';
-import { UserType } from '../entities';
+import { AdminService } from '@people/services';
+import { UpdatePeopleDto } from '@people/dto/register-people.dto';
+import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
+import { RolesGuard } from '@auth/guards/roles.guard';
+import { Roles } from '@auth/decorators/roles.decorator';
+import { UserType } from '@people/entities/people.entity';
 
 /**
  * Controlador para operaciones administrativas de usuarios

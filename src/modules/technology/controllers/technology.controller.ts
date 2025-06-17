@@ -7,15 +7,15 @@ import {
   Param,
   UseGuards,
 } from '@nestjs/common';
-import { TechnologyService } from '../services/technology.service';
+import { TechnologyService } from '@technology/services/technology.service';
 import {
   CreateTechnologyDto,
   UpdateTechnologyDto,
-} from '../dto/technology.dto';
-import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../../auth/guards/roles.guard';
-import { Roles } from '../../auth/decorators/roles.decorator';
-import { UserType } from '../../people/entities/people.entity';
+} from '@technology/dto/technology.dto';
+import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
+import { RolesGuard } from '@auth/guards/roles.guard';
+import { Roles } from '@auth/decorators/roles.decorator';
+import { UserType } from '@people/entities/people.entity';
 
 @Controller('technology')
 export class TechnologyController {

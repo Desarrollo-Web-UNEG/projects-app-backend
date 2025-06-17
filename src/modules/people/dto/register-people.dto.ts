@@ -9,7 +9,7 @@ import {
   MaxLength,
   IsEnum,
 } from 'class-validator';
-import { UserType } from '../entities/people.entity';
+import { UserType } from '@people/entities/people.entity';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
 
 export class RegisterPeopleDto {

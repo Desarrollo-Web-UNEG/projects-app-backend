@@ -1,13 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Project } from '../entities/project.entity';
-import { CreateProjectDto, UpdateProjectDto } from '../dto/project.dto';
-import { ProjectRepository } from './project.repository';
-import { People } from '../../people/entities';
-import { AcademicPeriod } from '../../academic-period/entities/academic-period.entity';
-import { Subject } from '../../subject/entities/subject.entity';
-import { ProjectValidatorService } from './project-validator.service';
+import { Project } from '@project/entities/project.entity';
+import { CreateProjectDto, UpdateProjectDto } from '@project/dto/project.dto';
+import { People } from '@people/entities/people.entity';
+import { AcademicPeriod } from '@academic-period/entities/academic-period.entity';
+import { Subject } from '@subject/entities/subject.entity';
+import { ProjectValidatorService } from '@project/services/project-validator.service';
 
 /**
  * Servicio para la gestión de proyectos
@@ -125,7 +124,7 @@ export class ProjectService {
     const {
       academicPeriodId,
       subjectId,
-      name,
+      title,
       description,
       categoryId,
       technologyIds,
@@ -150,7 +149,7 @@ export class ProjectService {
     }
 
     Object.assign(project, {
-      name: name || project.name,
+      title: title || project.title,
       description: description || project.description,
     });
 

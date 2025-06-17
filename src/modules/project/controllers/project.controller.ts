@@ -9,12 +9,12 @@ import {
   UseGuards,
   Request,
 } from '@nestjs/common';
-import { ProjectService } from '../services/project.service';
-import { CreateProjectDto, UpdateProjectDto } from '../dto/project.dto';
-import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../../auth/guards/roles.guard';
-import { Roles } from '../../auth/decorators/roles.decorator';
-import { UserType } from '../../people/entities';
+import { ProjectService } from '@project/services/project.service';
+import { CreateProjectDto, UpdateProjectDto } from '@project/dto/project.dto';
+import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
+import { RolesGuard } from '@auth/guards/roles.guard';
+import { Roles } from '@auth/decorators/roles.decorator';
+import { UserType } from '@people/entities/people.entity';
 
 @Controller('projects')
 export class ProjectController {

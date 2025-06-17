@@ -1,6 +1,6 @@
 import { Controller, Get, Param, UseGuards, Request } from '@nestjs/common';
-import { ProfileService } from '../services';
-import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
+import { ProfileService } from '@people/services';
+import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
 
 /**
  * Controlador para la gestión de perfiles de usuario

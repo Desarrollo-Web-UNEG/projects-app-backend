@@ -1,5 +1,5 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateCommentDto } from './create-comment.dto';
+import { CreateCommentDto } from '@comments/dto/create-comment.dto';
 
 /**
  * UpdateCommentDto

@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { AuthService as PeopleAuthService } from '../../people/services';
-import { People } from '../../people/entities';
-import { JwtAuthService } from './jwt.service';
+import { AuthService as PeopleAuthService } from '@people/services';
+import { People } from '@people/entities/people.entity';
+import { JwtAuthService } from '@auth/services/jwt.service';
 
 /**
  * Servicio para la autenticación de usuarios

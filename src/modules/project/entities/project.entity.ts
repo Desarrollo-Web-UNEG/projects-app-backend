@@ -7,14 +7,14 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { People } from '../../people/entities/people.entity';
-import { Scores } from '../../scores/scores.entity';
-import { Comments } from '../../comments/comments.entity';
-import { Subject } from '../../subject/entities/subject.entity';
-import { Technology } from '../../technology/entities/technology.entity';
-import { Category } from '../../category/entities/category.entity';
-import { AcademicPeriod } from '../../academic-period/entities/academic-period.entity';
-import { Evaluation } from '../../evaluation/evaluation.entity';
+import { People } from '@people/entities/people.entity';
+import { Score } from '@scores/entities/score.entity';
+import { Comments } from '@comments/comments.entity';
+import { Subject } from '@subject/entities/subject.entity';
+import { Technology } from '@technology/entities/technology.entity';
+import { Category } from '@category/entities/category.entity';
+import { AcademicPeriod } from '@academic-period/entities/academic-period.entity';
+import { Evaluation } from '@evaluation/evaluation.entity';
 
 @Entity()
 export class Project {
@@ -22,7 +22,7 @@ export class Project {
   id: number;
 
   @Column()
-  name: string;
+  title: string;
 
   @Column()
   description: string;
@@ -36,8 +36,8 @@ export class Project {
   @ManyToOne(() => AcademicPeriod, (period) => period.projects)
   academicPeriod: AcademicPeriod;
 
-  @OneToMany(() => Scores, (scores) => scores.project)
-  scores: Scores[];
+  @OneToMany(() => Score, (score) => score.project)
+  scores: Score[];
 
   @OneToMany(() => Comments, (comments) => comments.project)
   comments: Comments[];

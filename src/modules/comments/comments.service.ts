@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Comments } from './comments.entity';
+import { Comments } from '@comments/comments.entity';
 
 /**
  * Servicio CommentsService

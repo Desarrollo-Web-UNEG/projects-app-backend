@@ -1,8 +1,8 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { AcademicPeriodService } from '../services/academic-period.service';
-import { AcademicPeriod } from '../entities/academic-period.entity';
+import { AcademicPeriodService } from '@academic-period/services/academic-period.service';
+import { AcademicPeriod } from '@academic-period/entities/academic-period.entity';
 
 describe('AcademicPeriodService', () => {
   let service: AcademicPeriodService;

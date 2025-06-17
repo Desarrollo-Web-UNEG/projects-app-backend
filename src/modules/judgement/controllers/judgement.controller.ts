@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
-import { JudgementService } from '../services/judgement.service';
-import { CreateJudgementDto } from '../dto/create-judgement.dto';
-import { Judgement } from '../entities/judgement.entity';
+import { JudgementService } from '@judgement/services/judgement.service';
+import { CreateJudgementDto } from '@judgement/dto/create-judgement.dto';
+import { Judgement } from '@judgement/entities/judgement.entity';
 
 @Controller('judgements')
 export class JudgementController {

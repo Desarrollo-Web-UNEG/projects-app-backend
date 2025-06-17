@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { JudgementRepository } from './judgement.repository';
-import { CreateJudgementDto } from '../dto/create-judgement.dto';
-import { Judgement } from '../entities/judgement.entity';
+import { JudgementRepository } from '@judgement/services/judgement.repository';
+import { CreateJudgementDto } from '@judgement/dto/create-judgement.dto';
+import { Judgement } from '@judgement/entities/judgement.entity';
 
 @Injectable()
 export class JudgementService {

@@ -5,7 +5,7 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { People } from '../people/entities/people.entity';
+import { People } from '@people/entities/people.entity';
 
 @Entity()
 export class Badge {

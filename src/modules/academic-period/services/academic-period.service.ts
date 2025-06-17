@@ -3,8 +3,8 @@ import {
   NotFoundException,
   ConflictException,
 } from '@nestjs/common';
-import { AcademicPeriod } from '../entities/academic-period.entity';
-import { CreateAcademicPeriodDto, UpdateAcademicPeriodDto } from '../dto/academic-period.dto';
+import { AcademicPeriod } from '@academic-period/entities/academic-period.entity';
+import { CreateAcademicPeriodDto, UpdateAcademicPeriodDto } from '@academic-period/dto/academic-period.dto';
 import { AcademicPeriodRepository } from './academic-period.repository';
 
 /**

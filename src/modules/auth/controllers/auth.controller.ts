@@ -1,6 +1,6 @@
 import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
-import { AuthService } from '../services/auth.service';
-import { LoginDto } from '../dto/login.dto';
+import { AuthService } from '@auth/services/auth.service';
+import { LoginDto } from '@auth/dto/login.dto';
 
 /**
  * Controlador para la autenticación de usuarios

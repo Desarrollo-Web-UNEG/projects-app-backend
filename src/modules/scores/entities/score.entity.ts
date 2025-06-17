@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, CreateDateColumn, UpdateDateColumn } from 'typeorm';
-import { Project } from '../../project/entities/project.entity';
-import { People } from '../../people/entities';
+import { Project } from '@project/entities/project.entity';
+import { People } from '@people/entities/people.entity';
 
 @Entity('scores')
 export class Score {

@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Project } from '../../project/entities/project.entity';
+import { Project } from '@project/entities/project.entity';
 
 /**
  * Entidad que representa un período académico

@@ -5,9 +5,9 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { People, UserStatus } from '../entities/people.entity';
-import { UpdatePeopleDto } from '../dto/register-people.dto';
-import * as bcrypt from 'bcrypt';
+import { People, UserStatus } from '@people/entities/people.entity';
+import { UpdatePeopleDto } from '@people/dto/register-people.dto';
+import * as bcrypt from 'bcrypt'; 
 
 /**
  * Servicio para operaciones administrativas de usuarios

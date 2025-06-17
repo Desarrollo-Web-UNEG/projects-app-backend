@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Category } from '../../category/entities/category.entity';
-import { Technology } from '../../technology/technology.entity';
+import { Category } from '@category/entities/category.entity';
+import { Technology } from '@technology/entities/technology.entity';
 
 /**
  * Servicio para validar las entidades relacionadas con los proyectos

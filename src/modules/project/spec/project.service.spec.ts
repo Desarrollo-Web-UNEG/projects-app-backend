@@ -1,13 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ProjectService } from '../services';
-import { Project } from '../entities/project.entity';
-import { People } from '../../people/entities/people.entity';
-import { AcademicPeriod } from '../../academic-period/entities/academic-period.entity';
-import { Subject } from '../../subject/entities/subject.entity';
-import { Category } from '../../category/entities/category.entity';
-import { Technology } from '../../technology/entities/technology.entity';
+import { ProjectService } from '@project/services/project.service';
+import { Project } from '@project/entities/project.entity';
+import { People } from '@people/entities/people.entity';
+import { AcademicPeriod } from '@academic-period/entities/academic-period.entity';
+import { Subject } from '@subject/entities/subject.entity';
+import { Category } from '@category/entities/category.entity';
+import { Technology } from '@technology/entities/technology.entity';
 
 describe('ProjectService', () => {
   let service: ProjectService;

@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ScoreRepository } from './score.repository';
-import { CreateScoreDto } from '../dto/create-score.dto';
-import { Score } from '../entities/score.entity';
+import { ScoreRepository } from '@scores/services/score.repository';
+import { CreateScoreDto } from '@scores/dto/create-score.dto';
+import { Score } from '@scores/entities/score.entity';
 
 @Injectable()
 export class ScoreService {

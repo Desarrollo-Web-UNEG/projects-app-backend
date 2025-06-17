@@ -1,5 +1,5 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToMany } from 'typeorm';
-import { Project } from '../../project/entities/project.entity';
+import { Project } from '@project/entities/project.entity';
 
 @Entity()
 export class Technology {

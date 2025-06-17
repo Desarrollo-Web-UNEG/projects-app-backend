@@ -5,9 +5,9 @@ import {
   ManyToOne,
   ManyToMany,
 } from 'typeorm';
-import { Project } from '../project/entities/project.entity';
-import { People } from '../people/entities/people.entity';
-import { Judgement } from '../judgement/entities/judgement.entity';
+import { Project } from '@project/entities/project.entity';
+import { People } from '@people/entities/people.entity';
+import { Judgement } from '@judgement/entities/judgement.entity';
 
 @Entity()
 export class Evaluation {

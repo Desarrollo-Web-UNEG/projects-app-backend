@@ -8,12 +8,12 @@ import {
   Delete,
   UseGuards,
 } from '@nestjs/common';
-import { SubjectService } from '../services/subject.service';
-import { CreateSubjectDto, UpdateSubjectDto } from '../dto/subject.dto';
-import { JwtAuthGuard } from '../../auth/guards/jwt-auth.guard';
-import { RolesGuard } from '../../auth/guards/roles.guard';
-import { Roles } from '../../auth/decorators/roles.decorator';
-import { UserType } from '../../people/entities';
+import { SubjectService } from '@subject/services/subject.service';
+import { CreateSubjectDto, UpdateSubjectDto } from '@subject/dto/subject.dto';
+import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
+import { RolesGuard } from '@auth/guards/roles.guard';
+import { Roles } from '@auth/decorators/roles.decorator';
+import { UserType } from '@people/entities/people.entity';
 
 @Controller('subjects')
 export class SubjectController {

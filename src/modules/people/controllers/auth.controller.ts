@@ -1,6 +1,6 @@
 import { Controller, Post, Body } from '@nestjs/common';
-import { AuthService } from '../services';
-import { RegisterPeopleDto } from '../dto/register-people.dto';
+import { AuthService } from '@people/services';
+import { RegisterPeopleDto } from '@people/dto/register-people.dto';
 
 /**
  * Controlador para la autenticación y registro de usuarios

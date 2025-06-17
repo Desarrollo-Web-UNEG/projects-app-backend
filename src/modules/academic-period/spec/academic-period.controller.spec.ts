@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AcademicPeriodController } from '../controllers/academic-period.controller';
-import { AcademicPeriodService } from '../services/academic-period.service';
+import { AcademicPeriodController } from '@academic-period/controllers/academic-period.controller';
+import { AcademicPeriodService } from '@academic-period/services/academic-period.service';
 
 describe('AcademicPeriodController', () => {
   let controller: AcademicPeriodController;
