@@ -71,7 +71,7 @@ export class CategoryService {
   async updateById(id: string, changes: UpdateCategoryDto): Promise<Category> {
     const category = await this.findById(id);
 
-    if (changes.name && changes.name !== category.name) {
+    if (changes && changes.name && changes.name !== category.name) {
       const existing = await this.categoryRepository.findOne({
         where: { name: changes.name },
       });
@@ -82,7 +82,7 @@ export class CategoryService {
       }
     }
 
-    Object.assign(category, changes);
+    Object.assign(category, changes || {});
     return await this.categoryRepository.save(category);
   }
 
