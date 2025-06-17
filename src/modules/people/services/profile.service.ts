@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { People } from '../entities';
+import { People } from '../entities/people.entity';
 
 /**
  * Servicio para la gestión de perfiles de usuario
