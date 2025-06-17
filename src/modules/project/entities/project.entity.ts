@@ -7,11 +7,11 @@ import {
   ManyToMany,
   JoinTable,
 } from 'typeorm';
-import { People } from '../../people/entities';
+import { People } from '../../people/entities/people.entity';
 import { Scores } from '../../scores/scores.entity';
 import { Comments } from '../../comments/comments.entity';
 import { Subject } from '../../subject/entities/subject.entity';
-import { Technology } from '../../technology/technology.entity';
+import { Technology } from '../../technology/entities/technology.entity';
 import { Category } from '../../category/entities/category.entity';
 import { AcademicPeriod } from '../../academic-period/entities/academic-period.entity';
 import { Evaluation } from '../../evaluation/evaluation.entity';

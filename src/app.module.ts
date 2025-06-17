@@ -15,7 +15,8 @@ import {
   Evaluation,
   Judgement,
 } from './modules';
-import { People } from './modules/people/entities';
+
+import { People } from './modules/people/entities/people.entity';
 import { AuthModule } from './modules/auth/auth.module';
 import { PeopleModule } from './modules/people/people.module';
 import { SubjectModule } from './modules/subject/subject.module';
@@ -24,6 +25,7 @@ import { ProjectModule } from './modules/project/project.module';
 import { JudgementModule } from './modules/judgement/judgement.module';
 import { ScoresModule } from './modules/scores/scores.module';
 import { CategoryModule } from './modules/category/category.module';
+import { TechnologyModule } from './modules/technology/technology.module';
 
 import { CommentsModule } from './modules/comments/comments.module';
 
@@ -84,6 +86,7 @@ import { CommentsModule } from './modules/comments/comments.module';
     ScoresModule,
     CategoryModule,
     CommentsModule, // Módulo de comentarios para gestionar el CRUD de comentarios.
+    TechnologyModule,
   ],
   // Controladores globales de la aplicación.
   controllers: [AppController],
