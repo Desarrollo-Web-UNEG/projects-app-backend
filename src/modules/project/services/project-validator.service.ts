@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Category } from '../../category/category.entity';
+import { Category } from '../../category/entities/category.entity';
 import { Technology } from '../../technology/technology.entity';
 
 /**
@@ -20,10 +20,10 @@ export class ProjectValidatorService {
    * Valida y obtiene todas las entidades relacionadas necesarias para un proyecto
    */
   async validateRelatedEntities(
-    categoryId: number,
+    categoryId: string | number,
     technologyIds: number[],
   ) {
-    const category = await this.categoryRepository.findOne({ where: { id: categoryId } });
+    const category = await this.categoryRepository.findOne({ where: { id: String(categoryId) } });
     if (!category) {
       throw new NotFoundException(`Category with ID ${categoryId} not found`);
     }
@@ -38,4 +38,4 @@ export class ProjectValidatorService {
       technologies,
     };
   }
-} 
+}

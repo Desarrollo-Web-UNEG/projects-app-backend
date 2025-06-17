@@ -6,7 +6,7 @@ import { Project } from './entities/project.entity';
 import { People } from '../people/entities';
 import { AcademicPeriod } from '../academic-period/entities/academic-period.entity';
 import { Subject } from '../subject/entities/subject.entity';
-import { Category } from '../category/category.entity';
+import { Category } from '../category/entities/category.entity';
 import { Technology } from '../technology/technology.entity';
 
 @Module({

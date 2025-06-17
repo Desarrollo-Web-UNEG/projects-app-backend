@@ -6,7 +6,7 @@ import { CreateProjectDto, UpdateProjectDto } from '../dto/project.dto';
 import { People } from '../../people/entities';
 import { AcademicPeriod } from '../../academic-period/entities/academic-period.entity';
 import { Subject } from '../../subject/entities/subject.entity';
-import { Category } from '../../category/category.entity';
+import { Category } from '../../category/entities/category.entity';
 import { Technology } from '../../technology/technology.entity';
 
 /**
@@ -93,7 +93,7 @@ export class ProjectRepository {
   /**
    * Busca una categoría por su ID
    */
-  async findCategoryById(id: number): Promise<Category | null> {
+  async findCategoryById(id: string): Promise<Category | null> {
     return this.categoryRepository.findOne({ where: { id } });
   }
 

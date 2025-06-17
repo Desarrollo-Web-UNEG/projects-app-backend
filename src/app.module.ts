@@ -23,6 +23,8 @@ import { AcademicPeriodModule } from './modules/academic-period/academic-period.
 import { ProjectModule } from './modules/project/project.module';
 import { JudgementModule } from './modules/judgement/judgement.module';
 import { ScoresModule } from './modules/scores/scores.module';
+import { CategoryModule } from './modules/category/category.module';
+
 
 @Module({
   imports: [
@@ -70,6 +72,7 @@ import { ScoresModule } from './modules/scores/scores.module';
     ProjectModule,
     JudgementModule,
     ScoresModule,
+    CategoryModule,
   ],
   controllers: [AppController],
   providers: [AppService],

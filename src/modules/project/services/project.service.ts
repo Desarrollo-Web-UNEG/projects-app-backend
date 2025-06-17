@@ -70,7 +70,7 @@ export class ProjectService {
     const subject = await this.findSubjectById(String(subjectId));
 
     const relatedEntities = await this.projectValidator.validateRelatedEntities(
-      categoryId,
+      String(categoryId),
       technologyIds || [],
     );
 
@@ -139,13 +139,17 @@ export class ProjectService {
       project.subject = await this.findSubjectById(String(subjectId));
     }
 
-    const relatedEntities = await this.projectValidator.validateRelatedEntities(
-      categoryId || 0,
-      technologyIds || [],
-    );
+    if (categoryId) {
+      const relatedEntities = await this.projectValidator.validateRelatedEntities(
+        categoryId,
+        technologyIds || [],
+      );
+      Object.assign(project, {
+        ...relatedEntities,
+      });
+    }
 
     Object.assign(project, {
-      ...relatedEntities,
       name: name || project.name,
       description: description || project.description,
     });
@@ -161,4 +165,4 @@ export class ProjectService {
     const project = await this.findById(id);
     await this.projectRepository.remove(project);
   }
-} 
+}

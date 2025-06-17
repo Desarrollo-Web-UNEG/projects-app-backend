@@ -12,7 +12,7 @@ import { Scores } from '../../scores/scores.entity';
 import { Comments } from '../../comments/comments.entity';
 import { Subject } from '../../subject/entities/subject.entity';
 import { Technology } from '../../technology/technology.entity';
-import { Category } from '../../category/category.entity';
+import { Category } from '../../category/entities/category.entity';
 import { AcademicPeriod } from '../../academic-period/entities/academic-period.entity';
 import { Evaluation } from '../../evaluation/evaluation.entity';
 

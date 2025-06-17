@@ -32,10 +32,10 @@ export class CreateProjectDto {
   @ApiProperty()
   subjectId: string;
 
-  @IsNumber()
+  @IsUUID()
   @IsNotEmpty()
   @ApiProperty()
-  categoryId: number;
+  categoryId: string;
 
   @IsArray()
   @IsNumber({}, { each: true })
@@ -65,14 +65,14 @@ export class UpdateProjectDto {
   @ApiProperty({ required: false })
   subjectId?: number;
 
-  @IsNumber()
+  @IsUUID()
   @IsOptional()
   @ApiProperty({ required: false })
-  categoryId?: number;
+  categoryId?: string;
 
   @IsArray()
   @IsNumber({}, { each: true })
   @IsOptional()
   @ApiProperty({ required: false, type: [Number] })
   technologyIds?: number[];
-} 
+}
