@@ -7,7 +7,7 @@ export { Comments } from '@comments/comments.entity';
 export { Subject } from '@subject/entities/subject.entity';
 export { Technology } from '@technology/entities/technology.entity';
 export { Category } from '@category/entities/category.entity';
-export { Evaluation } from '@evaluation/evaluation.entity';
+export { Evaluation } from '@/modules/evaluation/entities/evaluation.entity';
 export { Judgement } from '@judgement/entities/judgement.entity';
 
 export { PeopleModule } from '@people/people.module';
