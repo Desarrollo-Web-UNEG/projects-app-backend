@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 import { People } from '@people/entities/people.entity';
 import { Score } from '@scores/entities/score.entity';
-import { Comments } from '@comments/comments.entity';
+import { Comments } from '@/modules/comments/entities/comments.entity';
 import { Subject } from '@subject/entities/subject.entity';
 import { Technology } from '@technology/entities/technology.entity';
 import { Category } from '@category/entities/category.entity';

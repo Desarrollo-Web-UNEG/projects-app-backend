@@ -7,7 +7,7 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { CommentsService } from '@comments/comments.service';
+import { CommentsService } from '@/modules/comments/service/comments.service';
 import { CreateCommentDto } from '@comments/dto/create-comment.dto';
 import { UpdateCommentDto } from '@comments/dto/update-comment.dto';
 

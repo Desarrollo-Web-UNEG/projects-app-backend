@@ -12,7 +12,7 @@ import {
 import { Exclude } from 'class-transformer';
 import { Badge } from '@badge/entities/badge.entity';
 import { Project } from '@project/entities/project.entity';
-import { Comments } from '@comments/comments.entity';
+import { Comments } from '@/modules/comments/entities/comments.entity';
 import { Evaluation } from '@/modules/evaluation/entities/evaluation.entity';
 
 export enum UserType {
