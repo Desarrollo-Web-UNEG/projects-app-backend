@@ -19,5 +19,6 @@ export class Badge {
   description: string;
 
   @ManyToMany(() => People, (people) => people.badges)
+  @JoinTable()
   people: People[];
 }

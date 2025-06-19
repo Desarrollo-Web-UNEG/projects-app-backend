@@ -1,4 +1,4 @@
-export { Badge } from '@badge/badge.entity';
+export { Badge } from '@badge/entities/badge.entity';
 export { People } from '@people/entities/people.entity';
 export { Project } from '@project/entities/project.entity';
 export { AcademicPeriod } from '@academic-period/entities/academic-period.entity';
