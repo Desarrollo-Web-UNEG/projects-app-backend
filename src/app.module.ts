@@ -28,6 +28,7 @@ import { CategoryModule } from '@category/category.module';
 import { TechnologyModule } from '@technology/technology.module';
 import { CommentsModule } from '@comments/comments.module';
 import { EvaluationModule } from '@evaluation/evaluation.module';
+import { BadgeModule } from '@badge/badge.module';
 
 
 /**
@@ -89,6 +90,7 @@ import { EvaluationModule } from '@evaluation/evaluation.module';
     CommentsModule, // Módulo de comentarios para gestionar el CRUD de comentarios.
     TechnologyModule,
     EvaluationModule,
+    BadgeModule,
   ],
   // Controladores globales de la aplicación.
   controllers: [AppController],

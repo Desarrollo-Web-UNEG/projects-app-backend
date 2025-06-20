@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
 import { ScoreService } from '@scores/services/score.service';
 import { CreateScoreDto } from '@scores/dto/create-score.dto';
 import { Score } from '@scores/entities/score.entity';
