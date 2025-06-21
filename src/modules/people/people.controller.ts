@@ -1,10 +1,10 @@
-import { Controller, Post, Body, /*Get, Param, UseGuards, Request*/ } from '@nestjs/common';
+import { Controller, Post, Body, Get, Param, UseGuards, Request } from '@nestjs/common';
 import { PeopleService } from './people.service';
 import { RegisterPeopleDto } from './dto/register-people.dto';
-/* import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { RolesGuard } from '../auth/guards/roles.guard';
 import { Roles } from '../auth/decorators/roles.decorator';
-import { UserType } from './entities/people.entity'; */
+import { UserType } from './entities/people.entity';
 
 @Controller('people')
 export class PeopleController {
@@ -15,7 +15,7 @@ export class PeopleController {
     return this.peopleService.register(registerDto);
   }
 
-  /*
+
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserType.ADMIN)
   @Get('pending')
@@ -42,5 +42,4 @@ export class PeopleController {
   async getProfile(@Request() req) {
     return req.user;
   }
-  */
 } 
