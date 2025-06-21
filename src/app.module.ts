@@ -50,6 +50,12 @@ import { BadgeModule } from '@badge/badge.module';
       database: process.env.POSTGRES_DATABASE,
       autoLoadEntities: true,
       synchronize: true,
+      ssl: process.env.POSTGRES_SSL === 'true',
+      extra: {
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      },
       entities: [
         Badge,
         People,
