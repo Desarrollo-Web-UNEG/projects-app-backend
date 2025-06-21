@@ -1,5 +1,5 @@
 export { Badge } from './badge/badge.entity';
-export { People } from './people/people.entity';
+export { People } from './people/entities/people.entity';
 export { Project } from './project/project.entity';
 export { AcademicPeriod } from './academic-period/academic-period.entity';
 export { Scores } from './scores/scores.entity';
@@ -9,3 +9,5 @@ export { Technology } from './technology/technology.entity';
 export { Category } from './category/category.entity';
 export { Evaluation } from './evaluation/evaluation.entity';
 export { Judgement } from './judgement/judgement.entity';
+
+export { PeopleModule } from './people/people.module'; 

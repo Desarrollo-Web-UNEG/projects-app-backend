@@ -15,8 +15,9 @@ import {
   Evaluation,
   Judgement,
 } from './modules';
-import { People } from './modules/people/people.entity';
-
+import { People } from './modules/people/entities/people.entity';
+import { AuthModule } from './modules/auth/auth.module';
+import { PeopleModule } from './modules/people/people.module';
 
 @Module({
   imports: [
@@ -57,7 +58,8 @@ import { People } from './modules/people/people.entity';
       Evaluation,
       Judgement,
     ]),
-
+    AuthModule,
+    PeopleModule,
   ],
   controllers: [AppController],
   providers: [AppService],

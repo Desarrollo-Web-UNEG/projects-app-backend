@@ -1,8 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable, OneToMany, ManyToOne } from 'typeorm';
 import { Exclude } from 'class-transformer';
-import { Badge } from '../badge/badge.entity';
-import { Project } from '../project/project.entity';
-import { Evaluation } from '../evaluation/evaluation.entity';
+import { Badge } from '../../badge/badge.entity';
+import { Project } from '../../project/project.entity';
+import { Evaluation } from '../../evaluation/evaluation.entity';
 
 export enum UserType {
   STUDENT = 'student',
