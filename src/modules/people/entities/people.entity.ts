@@ -1,20 +1,31 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable, OneToMany, ManyToOne } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
+  ManyToMany,
+  JoinTable,
+  OneToMany,
+  ManyToOne,
+} from 'typeorm';
 import { Exclude } from 'class-transformer';
-import { Badge } from '../../badge/badge.entity';
-import { Project } from '../../project/project.entity';
-import { Evaluation } from '../../evaluation/evaluation.entity';
+import { Badge } from '@badge/entities/badge.entity';
+import { Project } from '@project/entities/project.entity';
+import { Comments } from '@/modules/comments/entities/comments.entity';
+import { Evaluation } from '@/modules/evaluation/entities/evaluation.entity';
 
 export enum UserType {
   STUDENT = 'student',
   PROFESSOR = 'professor',
   GUEST = 'guest',
-  ADMIN = 'admin'
+  ADMIN = 'admin',
 }
 
 export enum UserStatus {
   PENDING = 'pending',
   APPROVED = 'approved',
-  REJECTED = 'rejected'
+  REJECTED = 'rejected',
 }
 
 @Entity('people')
@@ -35,7 +46,7 @@ export class People {
     type: 'enum',
     enum: UserType,
     default: UserType.GUEST,
-    nullable: false
+    nullable: false,
   })
   user_type: UserType;
 
@@ -68,7 +79,7 @@ export class People {
     type: 'enum',
     enum: UserStatus,
     default: UserStatus.PENDING,
-    nullable: false
+    nullable: false,
   })
   status: UserStatus;
 
@@ -85,6 +96,9 @@ export class People {
   @OneToMany(() => Project, (project) => project.people)
   projects: Project[];
 
+  @OneToMany(() => Comments, (comments) => comments.people)
+  comments: Comments[];
+
   @OneToMany(() => Evaluation, (evaluation) => evaluation.evaluator)
   evaluations: Evaluation[];
-} 
+}

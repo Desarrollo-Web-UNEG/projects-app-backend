@@ -7,7 +7,7 @@ import {
   Badge,
   Project,
   AcademicPeriod,
-  Scores,
+  Score,
   Comments,
   Subject,
   Technology,
@@ -15,13 +15,32 @@ import {
   Evaluation,
   Judgement,
 } from './modules';
-import { People } from './modules/people/entities/people.entity';
-import { AuthModule } from './modules/auth/auth.module';
-import { PeopleModule } from './modules/people/people.module';
 
+import { People } from '@people/entities/people.entity';
+import { AuthModule } from '@auth/auth.module';
+import { PeopleModule } from '@people/people.module';
+import { SubjectModule } from '@subject/subject.module';
+import { AcademicPeriodModule } from '@academic-period/academic-period.module';
+import { ProjectModule } from '@project/project.module';
+import { JudgementModule } from '@judgement/judgement.module';
+import { ScoresModule } from '@scores/scores.module';
+import { CategoryModule } from '@category/category.module';
+import { TechnologyModule } from '@technology/technology.module';
+import { CommentsModule } from '@comments/comments.module';
+import { EvaluationModule } from '@evaluation/evaluation.module';
+import { BadgeModule } from '@badge/badge.module';
+
+
+/**
+ * AppModule
+ * Módulo raíz de la aplicación NestJS.
+ * Configura los módulos principales, la conexión a la base de datos y los controladores/servicios globales.
+ */
 @Module({
   imports: [
+    // Configura ConfigModule para cargar variables de entorno.
     ConfigModule.forRoot(),
+    // Configura la conexión principal a la base de datos PostgreSQL usando TypeORM.
     TypeOrmModule.forRoot({
       type: 'postgres',
       host: process.env.POSTGRES_HOST,
@@ -36,7 +55,7 @@ import { PeopleModule } from './modules/people/people.module';
         People,
         Project,
         AcademicPeriod,
-        Scores,
+        Score,
         Comments,
         Subject,
         Technology,
@@ -45,12 +64,13 @@ import { PeopleModule } from './modules/people/people.module';
         Judgement,
       ],
     }),
+    // Registra entidades con TypeORM para que puedan ser utilizadas por los repositorios.
     TypeOrmModule.forFeature([
       Badge,
       People,
       Project,
       AcademicPeriod,
-      Scores,
+      Score,
       Comments,
       Subject,
       Technology,
@@ -58,10 +78,23 @@ import { PeopleModule } from './modules/people/people.module';
       Evaluation,
       Judgement,
     ]),
+    // Módulos de la aplicación.
     AuthModule,
     PeopleModule,
+    SubjectModule,
+    AcademicPeriodModule,
+    ProjectModule,
+    JudgementModule,
+    ScoresModule,
+    CategoryModule,
+    CommentsModule, // Módulo de comentarios para gestionar el CRUD de comentarios.
+    TechnologyModule,
+    EvaluationModule,
+    BadgeModule,
   ],
+  // Controladores globales de la aplicación.
   controllers: [AppController],
+  // Proveedores de servicios globales de la aplicación.
   providers: [AppService],
 })
 export class AppModule {}

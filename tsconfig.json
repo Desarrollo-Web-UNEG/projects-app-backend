@@ -16,6 +16,25 @@
     "forceConsistentCasingInFileNames": true,
     "noImplicitAny": false,
     "strictBindCallApply": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "paths": {
+      "@/*": ["src/*"],
+      "@modules/*": ["src/modules/*"],
+      "@config/*": ["src/config/*"],
+      "@common/*": ["src/common/*"],
+      "@interfaces/*": ["src/interfaces/*"],
+      "@auth/*": ["src/modules/auth/*"],
+      "@badge/*": ["src/modules/badge/*"],
+      "@category/*": ["src/modules/category/*"],
+      "@judgement/*": ["src/modules/judgement/*"],
+      "@scores/*": ["src/modules/scores/*"],
+      "@subject/*": ["src/modules/subject/*"],
+      "@academic-period/*": ["src/modules/academic-period/*"],
+      "@evaluation/*": ["src/modules/evaluation/*"],
+      "@comments/*": ["src/modules/comments/*"],
+      "@people/*": ["src/modules/people/*"],
+      "@project/*": ["src/modules/project/*"],
+      "@technology/*": ["src/modules/technology/*"]
+    }
   }
 }
