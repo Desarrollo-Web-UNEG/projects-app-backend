@@ -52,7 +52,7 @@
     "@types/express": "^5.0.0",
     "@types/jest": "^29.5.14",
     "@types/node": "^22.10.7",
-    "@types/supertest": "^6.0.2",
+    "@types/supertest": "^6.0.3",
     "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-prettier": "^5.2.2",
@@ -74,7 +74,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -82,7 +82,24 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "@/(.*)": "<rootDir>/src/$1",
+      "@app/(.*)": "<rootDir>/src/app/$1",
+      "@modules/(.*)": "<rootDir>/src/modules/$1",
+      "@academic-period/(.*)": "<rootDir>/src/modules/academic-period/$1",
+      "@auth/(.*)": "<rootDir>/src/modules/auth/$1",
+      "@badge/(.*)": "<rootDir>/src/modules/badge/$1",
+      "@category/(.*)": "<rootDir>/src/modules/category/$1",
+      "@comments/(.*)": "<rootDir>/src/modules/comments/$1",
+      "@evaluation/(.*)": "<rootDir>/src/modules/evaluation/$1",
+      "@judgement/(.*)": "<rootDir>/src/modules/judgement/$1",
+      "@people/(.*)": "<rootDir>/src/modules/people/$1",
+      "@project/(.*)": "<rootDir>/src/modules/project/$1",
+      "@scores/(.*)": "<rootDir>/src/modules/scores/$1",
+      "@subject/(.*)": "<rootDir>/src/modules/subject/$1",
+      "@technology/(.*)": "<rootDir>/src/modules/technology/$1"
+    }
   }
 }

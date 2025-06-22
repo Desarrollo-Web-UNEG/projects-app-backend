@@ -8,6 +8,7 @@ import { AcademicPeriod } from '@academic-period/entities/academic-period.entity
 import { Subject } from '@subject/entities/subject.entity';
 import { Category } from '@category/entities/category.entity';
 import { Technology } from '@technology/entities/technology.entity';
+import { ProjectValidatorService } from '@project/services/project-validator.service';
 
 describe('ProjectService', () => {
   let service: ProjectService;
@@ -17,6 +18,7 @@ describe('ProjectService', () => {
   let subjectRepository: Repository<Subject>;
   let categoryRepository: Repository<Category>;
   let technologyRepository: Repository<Technology>;
+  let projectValidatorService: ProjectValidatorService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -62,6 +64,12 @@ describe('ProjectService', () => {
             findByIds: jest.fn(),
           },
         },
+        {
+          provide: ProjectValidatorService,
+          useValue: {
+            validateRelatedEntities: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
@@ -83,6 +91,9 @@ describe('ProjectService', () => {
     );
     technologyRepository = module.get<Repository<Technology>>(
       getRepositoryToken(Technology),
+    );
+    projectValidatorService = module.get<ProjectValidatorService>(
+      ProjectValidatorService,
     );
   });
 

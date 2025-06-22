@@ -1,9 +1,26 @@
 {
   "moduleFileExtensions": ["js", "json", "ts"],
-  "rootDir": ".",
+  "rootDir": "../",
   "testEnvironment": "node",
-  "testRegex": ".e2e-spec.ts$",
+  "testRegex": ".(e2e-)?spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "@/(.*)": "<rootDir>/src/$1",
+    "@app/(.*)": "<rootDir>/src/app/$1",
+    "@modules/(.*)": "<rootDir>/src/modules/$1",
+    "@academic-period/(.*)": "<rootDir>/src/modules/academic-period/$1",
+    "@auth/(.*)": "<rootDir>/src/modules/auth/$1",
+    "@badge/(.*)": "<rootDir>/src/modules/badge/$1",
+    "@category/(.*)": "<rootDir>/src/modules/category/$1",
+    "@comments/(.*)": "<rootDir>/src/modules/comments/$1",
+    "@evaluation/(.*)": "<rootDir>/src/modules/evaluation/$1",
+    "@judgement/(.*)": "<rootDir>/src/modules/judgement/$1",
+    "@people/(.*)": "<rootDir>/src/modules/people/$1",
+    "@project/(.*)": "<rootDir>/src/modules/project/$1",
+    "@scores/(.*)": "<rootDir>/src/modules/scores/$1",
+    "@subject/(.*)": "<rootDir>/src/modules/subject/$1",
+    "@technology/(.*)": "<rootDir>/src/modules/technology/$1"
   }
 }
