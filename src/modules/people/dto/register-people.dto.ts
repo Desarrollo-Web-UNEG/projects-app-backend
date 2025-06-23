@@ -11,6 +11,7 @@ import {
 } from 'class-validator';
 import { UserType } from '@people/entities/people.entity';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 
 export class RegisterPeopleDto {
   @IsString()
@@ -51,6 +52,7 @@ export class RegisterPeopleDto {
   birthdate?: string;
 
   @IsEmail()
+  @Transform(({ value }) => value?.toLowerCase())
   @IsNotEmpty()
   @ApiProperty({
     description: 'Correo electrónico',
@@ -107,4 +109,9 @@ export class RegisterPeopleDto {
 }
 //PartialType hace que tenga la misma estructura del registerPeopleDTO
 //Pero hace que sean opcionales los atributos
-export class UpdatePeopleDto extends PartialType(RegisterPeopleDto) {}
+export class UpdatePeopleDto extends PartialType(RegisterPeopleDto) {
+  @IsEmail()
+  @Transform(({ value }) => value?.toLowerCase())
+  @IsOptional()
+  email?: string;
+}

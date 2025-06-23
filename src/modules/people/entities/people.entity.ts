@@ -53,8 +53,16 @@ export class People {
   @Column({ type: 'date', nullable: true })
   birthdate?: Date;
 
+  private _email: string;
+
   @Column({ type: 'varchar', length: 150, unique: true, nullable: false })
-  email: string;
+  get email(): string {
+    return this._email;
+  }
+
+  set email(value: string) {
+    this._email = value?.toLowerCase();
+  }
 
   @Column({ type: 'varchar', length: 20, nullable: true })
   phone_number?: string;

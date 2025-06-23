@@ -25,7 +25,7 @@ export class AuthService {
    */
   async register(registerDto: RegisterPeopleDto): Promise<People> {
     const existingUser = await this.peopleRepository.findOne({
-      where: { email: registerDto.email },
+      where: { email: registerDto.email.toLowerCase() },
     });
 
     if (existingUser) {
@@ -52,7 +52,7 @@ export class AuthService {
    * @param password Contraseña del usuario
    */
   async validateUser(email: string, password: string): Promise<People> {
-    const user = await this.findByEmail(email);
+    const user = await this.findByEmail(email.toLowerCase());
 
     if (user.status !== UserStatus.APPROVED) {
       throw new UnauthorizedException('Tu cuenta aún no ha sido aprobada');
@@ -72,7 +72,7 @@ export class AuthService {
    */
   async findByEmail(email: string): Promise<People> {
     const user = await this.peopleRepository.findOne({
-      where: { email },
+      where: { email: email.toLowerCase() },
     });
 
     if (!user) {
