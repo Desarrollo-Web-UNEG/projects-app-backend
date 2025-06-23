@@ -24,7 +24,7 @@ export class ScoreRepository {
   async findById(id: string): Promise<Score> {
     const score = await this.repository.findOne({
       where: { id },
-      relations: ['project', 'judge'],
+      relations: ['project', 'evaluator'],
     });
 
     if (!score) {
