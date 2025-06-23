@@ -6,13 +6,11 @@ import {
   Patch,
   Param,
   Delete,
-  UseGuards,
 } from '@nestjs/common';
 import { CommentsService } from '@/modules/comments/service/comments.service';
 import { CreateCommentDto } from '@comments/dto/create-comment.dto';
 import { UpdateCommentDto } from '@comments/dto/update-comment.dto';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
-import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
 
 /**
  * Controlador CommentsController
@@ -21,7 +19,6 @@ import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
  */
 @ApiTags('Comments')
 @Controller('comments')
-@UseGuards(JwtAuthGuard)
 export class CommentsController {
   constructor(
     // Inyecta el CommentsService para utilizar sus métodos de lógica de negocio.
