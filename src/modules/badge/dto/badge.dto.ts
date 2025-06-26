@@ -15,3 +15,13 @@ export class CreateBadgeDto {
 //PartialType hace que tenga la misma estructura del registerPeopleDTO
 //Pero hace que sean opcionales los atributos
 export class UpdateBadgeDto extends PartialType(CreateBadgeDto) {}
+
+export class AssignBadgeDto {
+  @IsString()
+  @IsNotEmpty()
+  @ApiProperty()
+  peopleId: string;
+
+  @ApiProperty()
+  badgeId: number;
+}

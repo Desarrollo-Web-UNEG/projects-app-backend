@@ -10,7 +10,7 @@ import {
   CreateSubjectPeopleDto,
   UpdateSubjectPeopleDto,
 } from '@subject/dto/subject-people.dto';
-import { People } from '@people/entities/people.entity';
+import { People, UserType } from '@people/entities/people.entity';
 import { Subject } from '@subject/entities/subject.entity';
 import { In } from 'typeorm';
 
@@ -98,7 +98,7 @@ export class SubjectPeopleService {
     if (!subjectPeople) throw new NotFoundException('Relación no encontrada');
     // Validación: no se puede revertir una materia aprobada a no aprobada para un estudiante
     if (
-      subjectPeople.people?.user_type === 'student' &&
+      subjectPeople.people?.user_type === UserType.STUDENT &&
       subjectPeople.approved === true &&
       changes.approved === false
     ) {
@@ -107,8 +107,8 @@ export class SubjectPeopleService {
       );
     }
     // Validación: si la persona es estudiante y approved es false, no se puede asignar mark
-    const isStudent = subjectPeople.people?.user_type === 'student';
-    // Determinar el valor final de approved tras el update
+    const isStudent = subjectPeople.people?.user_type === UserType.STUDENT;
+
     const approvedFinal =
       changes.approved !== undefined
         ? changes.approved
