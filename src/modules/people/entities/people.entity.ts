@@ -14,6 +14,8 @@ import { Badge } from '@badge/entities/badge.entity';
 import { Project } from '@project/entities/project.entity';
 import { Comments } from '@comments/comments.entity';
 import { Evaluation } from '@/modules/evaluation/entities/evaluation.entity';
+import { Subject } from '@/modules/subject/entities/subject.entity';
+import { SubjectPeople } from '@subject/entities/subject-people.entity';
 
 export enum UserType {
   STUDENT = 'student',
@@ -101,4 +103,7 @@ export class People {
 
   @OneToMany(() => Evaluation, (evaluation) => evaluation.evaluator)
   evaluations: Evaluation[];
+
+  @OneToMany(() => SubjectPeople, (subjectPeople) => subjectPeople.people)
+  subjectPeople: SubjectPeople[];
 }

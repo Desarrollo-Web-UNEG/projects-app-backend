@@ -1,4 +1,11 @@
-import { IsString, IsNotEmpty, IsBoolean } from 'class-validator';
+import {
+  IsString,
+  IsNotEmpty,
+  IsBoolean,
+  IsArray,
+  IsNumber,
+  IsOptional,
+} from 'class-validator';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
 
 export class CreateSubjectDto {
@@ -16,6 +23,12 @@ export class CreateSubjectDto {
   @IsNotEmpty()
   @ApiProperty()
   isActive: boolean;
+
+  @IsArray()
+  @IsNumber({}, { each: true })
+  @IsOptional()
+  @ApiProperty({ required: false, type: [Number] })
+  subjectid?: number[];
 }
 //PartialType hace que tenga la misma estructura del registerPeopleDTO
 //Pero hace que sean opcionales los atributos
