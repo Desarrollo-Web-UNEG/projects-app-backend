@@ -16,6 +16,11 @@ export class CreateSubjectPeopleDto {
   @IsNotEmpty()
   @ApiProperty()
   approved: boolean;
+
+  @IsNumber()
+  @IsNotEmpty()
+  @ApiProperty()
+  mark: number;
 }
 
 export class UpdateSubjectPeopleDto extends PartialType(

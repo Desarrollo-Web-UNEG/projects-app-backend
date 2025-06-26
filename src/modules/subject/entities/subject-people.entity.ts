@@ -23,4 +23,7 @@ export class SubjectPeople {
 
   @Column({ type: 'boolean', default: false })
   approved: boolean;
+
+  @Column({ type: 'number', default: false })
+  mark: number;
 }
