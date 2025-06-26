@@ -73,6 +73,12 @@ export class SubjectPeopleService {
           );
         }
       }
+
+      if (dto.approved === false && dto.mark != null) {
+        throw new BadRequestException(
+          'No se puede asignar una nota a una materia no aprobada para un estudiante.',
+        );
+      }
     }
 
     // Crear la relación
@@ -87,8 +93,31 @@ export class SubjectPeopleService {
   async updateSubjectFromPeople(id: number, changes: UpdateSubjectPeopleDto) {
     const subjectPeople = await this.subjectPeopleRepo.findOne({
       where: { id },
+      relations: ['people'],
     });
     if (!subjectPeople) throw new NotFoundException('Relación no encontrada');
+    // Validación: no se puede revertir una materia aprobada a no aprobada para un estudiante
+    if (
+      subjectPeople.people?.user_type === 'student' &&
+      subjectPeople.approved === true &&
+      changes.approved === false
+    ) {
+      throw new BadRequestException(
+        'No se puede cambiar una materia aprobada a no aprobada para un estudiante.',
+      );
+    }
+    // Validación: si la persona es estudiante y approved es false, no se puede asignar mark
+    const isStudent = subjectPeople.people?.user_type === 'student';
+    // Determinar el valor final de approved tras el update
+    const approvedFinal =
+      changes.approved !== undefined
+        ? changes.approved
+        : subjectPeople.approved;
+    if (isStudent && approvedFinal === false && changes.mark != null) {
+      throw new BadRequestException(
+        'No se puede asignar una nota a una materia no aprobada para un estudiante.',
+      );
+    }
     Object.assign(subjectPeople, changes);
     return this.subjectPeopleRepo.save(subjectPeople);
   }
