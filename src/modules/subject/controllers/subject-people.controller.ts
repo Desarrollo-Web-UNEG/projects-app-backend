@@ -8,14 +8,17 @@ import {
   Param,
   ParseUUIDPipe,
   ParseIntPipe,
-  NotFoundException,
-  BadRequestException,
+  UseGuards,
 } from '@nestjs/common';
 import { SubjectPeopleService } from '@subject/services/subject-people.service';
 import {
   CreateSubjectPeopleDto,
   UpdateSubjectPeopleDto,
 } from '@subject/dto/subject-people.dto';
+import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
+import { RolesGuard } from '@auth/guards/roles.guard';
+import { Roles } from '@auth/decorators/roles.decorator';
+import { UserType } from '@people/entities/people.entity';
 
 @Controller('subject-people')
 export class SubjectPeopleController {
@@ -50,12 +53,15 @@ export class SubjectPeopleController {
   }
 
   // POST: Asignar materia a persona (estudiante/profesor)
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()
   async assignSubjectToPeople(@Body() dto: CreateSubjectPeopleDto) {
     return this.subjectPeopleService.assignSubjectToPeople(dto);
   }
 
   // PUT: Actualizar estado de la materia de ese estudiante
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserType.ADMIN)
   @Put(':id')
   async updateSubjectFromPeople(
     @Param('id', ParseIntPipe) id: number,
@@ -64,6 +70,8 @@ export class SubjectPeopleController {
     return this.subjectPeopleService.updateSubjectFromPeople(id, changes);
   }
 
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserType.ADMIN)
   @Delete(':id')
   async removeSubjectFromPeople(@Param('id', ParseIntPipe) id: number) {
     return this.subjectPeopleService.removeSubjectFromPeople(id);
