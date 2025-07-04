@@ -6,10 +6,11 @@ import { AuthController } from '@people/controllers/auth.controller';
 import { ProfileController } from '@people/controllers/profile.controller';
 import { AdminController } from '@people/controllers/admin.controller';
 import { AuthService } from '@people/services';
+import { StudenFileController } from '@people/controllers/studen_file.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([People])],
-  controllers: [AuthController, ProfileController, AdminController],
+  controllers: [AuthController, ProfileController, AdminController, StudenFileController],
   providers: [AuthService, ProfileService, AdminService],
   exports: [AuthService, ProfileService, AdminService],
 })

@@ -38,7 +38,6 @@ import { BadgeModule } from '@badge/badge.module';
  */
 @Module({
   imports: [
-    // Configura ConfigModule para cargar variables de entorno.
     ConfigModule.forRoot(),
     // Configura la conexión principal a la base de datos PostgreSQL usando TypeORM.
     TypeOrmModule.forRoot({
