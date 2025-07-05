@@ -14,7 +14,7 @@ export class AiService {
   private genAI: GoogleGenerativeAI;
   private model: any;
   private readonly ACADEMIC_PROMPT_BASE = `
-    Eres un asistente académico especializado. Tu función es respountas relacionadas con temas académicos, educativos, científicos y de aprendizaje.nder ÚNICAMENTE preg
+    Eres un asistente académico especializado. Tu función es responder preguntas relacionadas con temas académicos, educativos, científicos y de aprendizaje.
 
     REGLAS IMPORTANTES:
     1. SOLO responde preguntas académicas, educativas o científicas
@@ -43,6 +43,12 @@ export class AiService {
     - Religión (excepto desde perspectiva académica)
     - Temas de salud mental personal
     - Cualquier tema no relacionado con educación o ciencia
+
+    FORMATO DE RESPUESTA:
+    - Usa párrafos claros y separados.
+    - Utiliza saltos de línea para separar ideas o puntos importantes.
+    - Si das una lista, usa guiones o numeración y cada elemento en una línea nueva.
+    - Haz que la respuesta sea fácil de leer para humanos.
   `;
 
   constructor() {
@@ -62,9 +68,9 @@ export class AiService {
   }
 
   /**
-   * Valida si el mensaje es académico
+   * Valida si el mensaje es académico o al menos adecuado para el asistente
    * @param message Mensaje del usuario
-   * @returns true si es académico, false en caso contrario
+   * @returns true si es académico o adecuado, false en caso contrario
    */
   private isAcademicMessage(message: string): boolean {
     const academicKeywords = [
@@ -166,9 +172,38 @@ export class AiService {
       'ejemplos',
       'casos de uso',
     ];
-
+    const forbiddenKeywords = [
+      'chiste', 'broma', 'cuéntame un chiste', 'memes', 'sexo', 'sexual', 'grosería',
+      'insulto', 'insultar', 'política partidista', 'religión', 'novia', 'novio',
+      'pareja', 'amor', 'consejo amoroso', 'consejo personal', 'dinero fácil',
+      'hackear', 'piratería', 'apuesta', 'casino', 'lotería', 'nudes', 'desnudo',
+      'drogas', 'alcohol', 'fiesta', 'borracho', 'borracha', 'bailar', 'reggaeton',
+      'perreo', 'sexo', 'pornografía', 'porno', 'suicidio', 'autolesión', 'asesinato',
+      'matar', 'robar', 'delito', 'crimen', 'ilegal', 'ilegalidad',
+    ];
     const lowerMessage = message.toLowerCase();
-    return academicKeywords.some((keyword) => lowerMessage.includes(keyword));
+    // Si contiene palabras prohibidas, rechazar
+    if (forbiddenKeywords.some((kw) => lowerMessage.includes(kw))) {
+      return false;
+    }
+    // Si contiene palabras clave académicas, aceptar
+    if (academicKeywords.some((kw) => lowerMessage.includes(kw))) {
+      return true;
+    }
+    // Si tiene signos de interrogación, aceptar
+    if (lowerMessage.includes('?') || lowerMessage.includes('¿')) {
+      return true;
+    }
+    // Si la pregunta es suficientemente larga, aceptar
+    if (lowerMessage.split(' ').length > 5) {
+      return true;
+    }
+    // Si es muy corta o genérica, rechazar
+    if (lowerMessage.trim().length < 8) {
+      return false;
+    }
+    // Por defecto, aceptar
+    return true;
   }
 
   /**

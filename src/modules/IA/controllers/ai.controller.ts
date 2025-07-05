@@ -53,7 +53,7 @@ export class AiController {
     return this.aiService.processChatMessage(chatMessageDto);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get('info')
   @ApiOperation({
     summary: 'Obtener información del servicio de IA',
@@ -72,7 +72,7 @@ export class AiController {
     return this.aiService.getServiceInfo();
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Post('chat/academic-validation')
   @ApiOperation({
     summary: 'Validar si un mensaje es académico',
