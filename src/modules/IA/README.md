@@ -6,17 +6,36 @@ Este módulo proporciona un chatbot académico basado en Google Gemini AI que re
 
 ### Variables de Entorno
 
-Agrega la siguiente variable de entorno a tu archivo `.env`:
+Agrega las siguientes variables de entorno a tu archivo `.env`:
 
 ```env
+# API Key de Google Gemini AI (requerida)
 GEMINI_API_KEY=tu_api_key_de_gemini_aqui
+
+# Modelo de Gemini a usar (opcional, por defecto: gemini-1.5-flash - GRATUITO)
+GEMINI_MODEL=gemini-1.5-flash
 ```
+
+### Modelos Disponibles
+
+- `gemini-1.5-flash`: **Modelo gratuito** - Rápido y eficiente para la mayoría de casos de uso (recomendado)
+- `gemini-1.5-pro`: Modelo de pago - Más potente para tareas complejas
+- `gemini-pro`: Modelo anterior (puede no estar disponible en todas las regiones)
 
 Para obtener una API key de Gemini:
 
 1. Ve a [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Crea una nueva API key
+2. Crea una nueva API key (es gratuita)
 3. Copia la key y agrégala a tu archivo `.env`
+
+### Modelo Gratuito
+
+El servicio está configurado para usar `gemini-1.5-flash` por defecto, que es **completamente gratuito** y ofrece:
+
+- Respuestas rápidas y precisas
+- Cuota generosa para uso académico
+- Soporte completo para español
+- Ideal para preguntas y respuestas educativas
 
 ## Endpoints Disponibles
 
@@ -52,8 +71,9 @@ Obtiene información sobre el estado del servicio.
 ```json
 {
   "status": "active",
-  "model": "gemini-pro",
-  "academicFocus": true
+  "model": "gemini-1.5-flash",
+  "academicFocus": true,
+  "connectionStatus": true
 }
 ```
 
@@ -116,3 +136,19 @@ Authorization: Bearer tu_token_jwt
 - **400**: Mensaje vacío o no válido
 - **401**: No autorizado
 - **500**: Error interno del servidor o problema con la API de Gemini
+
+### Errores Comunes
+
+1. **404 Not Found - Modelo no encontrado**:
+
+   - Verifica que el modelo especificado en `GEMINI_MODEL` esté disponible
+   - Usa `gemini-1.5-flash` como modelo gratuito predeterminado
+
+2. **API Key inválida**:
+
+   - Verifica que `GEMINI_API_KEY` esté correctamente configurada
+   - Asegúrate de que la API key tenga permisos para usar Gemini
+
+3. **Límite de cuota excedido**:
+   - Verifica tu cuota en Google AI Studio
+   - El modelo `gemini-1.5-flash` tiene una cuota gratuita generosa

@@ -22,7 +22,7 @@ import {
 export class AiController {
   constructor(private readonly aiService: AiService) {}
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Post('chat')
   @ApiOperation({
     summary: 'Enviar mensaje al chatbot académico',

@@ -55,7 +55,10 @@ export class AiService {
     }
 
     this.genAI = new GoogleGenerativeAI(apiKey);
-    this.model = this.genAI.getGenerativeModel({ model: 'gemini-pro' });
+
+    // Intentar usar el modelo especificado en las variables de entorno o usar el modelo gratuito por defecto
+    const modelName = process.env.GEMINI_MODEL || 'gemini-1.5-flash';
+    this.model = this.genAI.getGenerativeModel({ model: modelName });
   }
 
   /**
@@ -240,6 +243,21 @@ export class AiService {
   }
 
   /**
+   * Prueba la conexión con Gemini AI
+   * @returns true si la conexión es exitosa
+   */
+  async testConnection(): Promise<boolean> {
+    try {
+      const result = await this.model.generateContent('Test connection');
+      const response = await result.response;
+      return response.text().length > 0;
+    } catch (error) {
+      console.error('Error al probar conexión con Gemini:', error);
+      return false;
+    }
+  }
+
+  /**
    * Obtiene información sobre el estado del servicio
    * @returns Información del servicio
    */
@@ -247,11 +265,15 @@ export class AiService {
     status: string;
     model: string;
     academicFocus: boolean;
+    connectionStatus: boolean;
   }> {
+    const connectionStatus = await this.testConnection();
+
     return {
-      status: 'active',
-      model: 'gemini-pro',
+      status: connectionStatus ? 'active' : 'error',
+      model: process.env.GEMINI_MODEL || 'gemini-1.5-flash',
       academicFocus: true,
+      connectionStatus,
     };
   }
 }
