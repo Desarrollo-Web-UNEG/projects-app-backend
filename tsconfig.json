@@ -23,6 +23,7 @@
       "@config/*": ["src/config/*"],
       "@common/*": ["src/common/*"],
       "@interfaces/*": ["src/interfaces/*"],
+      "@IA/*": ["src/modules/IA/*"],
       "@auth/*": ["src/modules/auth/*"],
       "@badge/*": ["src/modules/badge/*"],
       "@category/*": ["src/modules/category/*"],
