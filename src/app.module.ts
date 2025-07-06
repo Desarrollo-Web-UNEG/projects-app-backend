@@ -29,7 +29,7 @@ import { TechnologyModule } from '@technology/technology.module';
 import { BadgeModule } from '@badge/badge.module';
 import { CommentsModule } from '@comments/comments.module';
 import { EvaluationModule } from '@evaluation/evaluation.module';
-import { BadgeModule } from '@badge/badge.module';
+
 
 /**
  * AppModule
