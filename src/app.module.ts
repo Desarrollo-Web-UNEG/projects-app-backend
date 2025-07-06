@@ -29,7 +29,7 @@ import { TechnologyModule } from '@technology/technology.module';
 import { BadgeModule } from '@badge/badge.module';
 import { CommentsModule } from '@comments/comments.module';
 import { EvaluationModule } from '@evaluation/evaluation.module';
-
+import { AiModule } from './modules/IA/ai.module';
 
 /**
  * AppModule
@@ -100,6 +100,7 @@ import { EvaluationModule } from '@evaluation/evaluation.module';
     TechnologyModule,
     EvaluationModule,
     BadgeModule,
+    AiModule,
   ],
   // Controladores globales de la aplicación.
   controllers: [AppController],
