@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { People, UserStatus, UserType } from '@people/entities/people.entity';  
+import { People, UserStatus, UserType } from '@people/entities/people.entity';
 import { RegisterPeopleDto } from '@people/dto/register-people.dto';
 import * as bcrypt from 'bcrypt';
 
@@ -24,12 +24,20 @@ export class AuthService {
    * @param registerDto Datos del usuario a registrar
    */
   async register(registerDto: RegisterPeopleDto): Promise<People> {
-    const existingUser = await this.peopleRepository.findOne({
+    const existingUserEmail = await this.peopleRepository.findOne({
       where: { email: registerDto.email.toLowerCase() },
     });
 
-    if (existingUser) {
+    if (existingUserEmail) {
       throw new ConflictException('El correo electrónico ya está registrado');
+    }
+
+    const existingUserIdNumber = await this.peopleRepository.findOne({
+      where: { id_number: registerDto.id_number.toLowerCase() },
+    });
+
+    if (existingUserIdNumber) {
+      throw new ConflictException('La cedula ya está registrada');
     }
 
     const hashedPassword = await bcrypt.hash(registerDto.password, 10);
@@ -81,4 +89,4 @@ export class AuthService {
 
     return user;
   }
-} 
+}

@@ -1,7 +1,22 @@
-import { Controller, Get, Param, UseGuards, Request } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  UseGuards,
+  Request,
+  Put,
+  Body,
+} from '@nestjs/common';
 import { ProfileService } from '@people/services';
 import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+  ApiBody,
+} from '@nestjs/swagger';
+import { UpdatePeopleDto } from '@people/dto/register-people.dto';
 
 /**
  * Controlador para la gestión de perfiles de usuario
@@ -19,7 +34,9 @@ export class ProfileController {
    */
   @UseGuards(JwtAuthGuard)
   @Get('me')
-  @ApiOperation({ summary: 'Obtener el perfil del usuario autenticado actualmente' })
+  @ApiOperation({
+    summary: 'Obtener el perfil del usuario autenticado actualmente',
+  })
   @ApiResponse({ status: 200, description: 'Perfil del usuario.' })
   @ApiResponse({ status: 401, description: 'No autorizado.' })
   async getProfile(@Request() req) {
@@ -39,4 +56,17 @@ export class ProfileController {
   async getByEmail(@Param('email') email: string) {
     return this.profileService.findByEmail(email);
   }
-} 
+
+  @UseGuards(JwtAuthGuard)
+  @Put(':id')
+  @ApiOperation({
+    summary: 'Actualizar un usuario por su ID (Solo para Admin)',
+  })
+  @ApiBody({ type: UpdatePeopleDto })
+  @ApiResponse({ status: 200, description: 'Usuario actualizado.' })
+  @ApiResponse({ status: 404, description: 'Usuario no encontrado.' })
+  @ApiResponse({ status: 401, description: 'No autorizado.' })
+  async updateById(@Param('id') id: string, @Body() changes: UpdatePeopleDto) {
+    return this.profileService.updateUser(id, changes);
+  }
+}

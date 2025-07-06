@@ -6,8 +6,6 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { People, UserStatus } from '@people/entities/people.entity';
-import { UpdatePeopleDto } from '@people/dto/register-people.dto';
-import * as bcrypt from 'bcrypt'; 
 
 /**
  * Servicio para operaciones administrativas de usuarios
@@ -87,38 +85,6 @@ export class AdminService {
   }
 
   /**
-   * Actualiza un usuario existente
-   * @param id ID del usuario a actualizar
-   * @param changes Cambios a aplicar
-   */
-  async updateUser(id: string, changes: UpdatePeopleDto): Promise<People> {
-    const user = await this.peopleRepository.findOne({
-      where: { id },
-    });
-
-    if (!user) {
-      throw new NotFoundException('Usuario no encontrado');
-    }
-
-    if (changes.email && changes.email !== user.email) {
-      const existingUser = await this.peopleRepository.findOne({
-        where: { email: changes.email },
-      });
-      if (existingUser) {
-        throw new ConflictException('El correo electrónico ya está registrado');
-      }
-    }
-
-    if (changes.password) {
-      changes.password = await bcrypt.hash(changes.password, 10);
-    }
-
-    Object.assign(user, changes);
-
-    return this.peopleRepository.save(user);
-  }
-
-  /**
    * Elimina un usuario
    * @param id ID del usuario a eliminar
    */
@@ -158,4 +124,4 @@ export class AdminService {
       user: user,
     };
   }
-} 
+}
