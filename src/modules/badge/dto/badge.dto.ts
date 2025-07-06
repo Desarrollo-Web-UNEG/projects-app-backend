@@ -4,12 +4,18 @@ import { PartialType, ApiProperty } from '@nestjs/swagger';
 export class CreateBadgeDto {
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Nombre de la insignia',
+    example: 'Colaborador Destacado',
+  })
   name: string;
 
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({
+    description: 'Descripción de la insignia',
+    example: 'Otorgada por contribuciones significativas al proyecto.',
+  })
   description: string;
 }
 //PartialType hace que tenga la misma estructura del registerPeopleDTO

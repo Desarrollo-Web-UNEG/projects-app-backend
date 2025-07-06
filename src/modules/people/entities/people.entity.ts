@@ -12,7 +12,7 @@ import {
 import { Exclude } from 'class-transformer';
 import { Badge } from '@badge/entities/badge.entity';
 import { Project } from '@project/entities/project.entity';
-import { Comments } from '@comments/comments.entity';
+import { Comments } from '@/modules/comments/entities/comments.entity';
 import { Evaluation } from '@/modules/evaluation/entities/evaluation.entity';
 import { Subject } from '@/modules/subject/entities/subject.entity';
 import { SubjectPeople } from '@subject/entities/subject-people.entity';
@@ -55,8 +55,16 @@ export class People {
   @Column({ type: 'date', nullable: true })
   birthdate?: Date;
 
+  private _email: string;
+
   @Column({ type: 'varchar', length: 150, unique: true, nullable: false })
-  email: string;
+  get email(): string {
+    return this._email;
+  }
+
+  set email(value: string) {
+    this._email = value?.toLowerCase();
+  }
 
   @Column({ type: 'varchar', length: 20, nullable: true })
   phone_number?: string;

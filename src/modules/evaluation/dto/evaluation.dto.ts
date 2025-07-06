@@ -4,29 +4,45 @@ import { PartialType, ApiProperty } from '@nestjs/swagger';
 export class CreateEvaluationDto {
 
     @IsNumber() 
-    @ApiProperty()
+    @ApiProperty({
+        description: 'Puntuación de la evaluación',
+        example: 95.5,
+    })
     score: number;
 
     @IsString()
     @IsNotEmpty() 
-    @ApiProperty()
+    @ApiProperty({
+        description: 'Título de la evaluación',
+        example: 'Evaluación de Hito 1',
+    })
     title: string;
 
     @IsString()
     @IsOptional()
-    @ApiProperty()
+    @ApiProperty({
+        description: 'Descripción detallada de la evaluación',
+        example: 'Revisión del cumplimiento de los objetivos iniciales.',
+        required: false,
+    })
     description: string;
 
     @IsNumber()
     @IsNotEmpty()
-    @ApiProperty()
+    @ApiProperty({
+        description: 'ID del proyecto que está siendo evaluado',
+        example: 1,
+    })
     projectId: number;
 
     @IsNumber()
     @IsNotEmpty()
-    @ApiProperty()
+    @ApiProperty({
+        description: 'ID del evaluador (profesor/admin) que realiza la evaluación',
+        example: 2,
+    })
     evaluatorId: number;
 
 }
 
-export class UpdateEvaluationDto extends CreateEvaluationDto {}
+export class UpdateEvaluationDto extends PartialType(CreateEvaluationDto) {}

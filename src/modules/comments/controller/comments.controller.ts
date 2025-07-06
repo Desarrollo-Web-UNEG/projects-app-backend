@@ -7,15 +7,17 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { CommentsService } from '@comments/comments.service';
+import { CommentsService } from '@/modules/comments/service/comments.service';
 import { CreateCommentDto } from '@comments/dto/create-comment.dto';
 import { UpdateCommentDto } from '@comments/dto/update-comment.dto';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 /**
  * Controlador CommentsController
  * Este controlador maneja todas las solicitudes HTTP para la entidad Comments.
  * Las rutas están prefijadas con '/comments'.
  */
+@ApiTags('Comments')
 @Controller('comments')
 export class CommentsController {
   constructor(
@@ -29,6 +31,9 @@ export class CommentsController {
    * @returns El comentario creado.
    */
   @Post()
+  @ApiOperation({ summary: 'Crear un nuevo comentario' })
+  @ApiResponse({ status: 201, description: 'El comentario ha sido creado exitosamente.' })
+  @ApiResponse({ status: 401, description: 'No autorizado.' })
   create(@Body() createCommentDto: CreateCommentDto) {
     return this.commentsService.create(createCommentDto);
   }
@@ -38,6 +43,9 @@ export class CommentsController {
    * @returns Un array de comentarios.
    */
   @Get()
+  @ApiOperation({ summary: 'Obtener todos los comentarios' })
+  @ApiResponse({ status: 200, description: 'Lista de todos los comentarios.' })
+  @ApiResponse({ status: 401, description: 'No autorizado.' })
   findAll() {
     return this.commentsService.findAll();
   }
@@ -48,6 +56,10 @@ export class CommentsController {
    * @returns El comentario encontrado.
    */
   @Get(':id')
+  @ApiOperation({ summary: 'Obtener un comentario por su ID' })
+  @ApiResponse({ status: 200, description: 'Comentario encontrado.' })
+  @ApiResponse({ status: 404, description: 'Comentario no encontrado.' })
+  @ApiResponse({ status: 401, description: 'No autorizado.' })
   findOne(@Param('id') id: string) {
     return this.commentsService.findOne(+id);
   }
@@ -59,6 +71,10 @@ export class CommentsController {
    * @returns El comentario actualizado.
    */
   @Patch(':id')
+  @ApiOperation({ summary: 'Actualizar un comentario por su ID' })
+  @ApiResponse({ status: 200, description: 'El comentario ha sido actualizado exitosamente.' })
+  @ApiResponse({ status: 404, description: 'Comentario no encontrado.' })
+  @ApiResponse({ status: 401, description: 'No autorizado.' })
   update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
     return this.commentsService.update(+id, updateCommentDto);
   }
@@ -68,6 +84,10 @@ export class CommentsController {
    * @param id El ID del comentario a eliminar.
    */
   @Delete(':id')
+  @ApiOperation({ summary: 'Eliminar un comentario por su ID' })
+  @ApiResponse({ status: 200, description: 'El comentario ha sido eliminado exitosamente.' })
+  @ApiResponse({ status: 404, description: 'Comentario no encontrado.' })
+  @ApiResponse({ status: 401, description: 'No autorizado.' })
   remove(@Param('id') id: string) {
     return this.commentsService.remove(+id);
   }

@@ -29,6 +29,7 @@ import { TechnologyModule } from '@technology/technology.module';
 import { BadgeModule } from '@badge/badge.module';
 import { CommentsModule } from '@comments/comments.module';
 import { EvaluationModule } from '@evaluation/evaluation.module';
+import { BadgeModule } from '@badge/badge.module';
 
 /**
  * AppModule
@@ -49,6 +50,14 @@ import { EvaluationModule } from '@evaluation/evaluation.module';
       database: process.env.POSTGRES_DATABASE,
       autoLoadEntities: true,
       synchronize: true,
+      ssl: process.env.POSTGRES_SSL === 'true',
+      ...(process.env.POSTGRES_SSL === 'true' && {
+        extra: {
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        },
+      }),
       entities: [
         Badge,
         People,
@@ -90,6 +99,7 @@ import { EvaluationModule } from '@evaluation/evaluation.module';
     CommentsModule, // Módulo de comentarios para gestionar el CRUD de comentarios.
     TechnologyModule,
     EvaluationModule,
+    BadgeModule,
   ],
   // Controladores globales de la aplicación.
   controllers: [AppController],

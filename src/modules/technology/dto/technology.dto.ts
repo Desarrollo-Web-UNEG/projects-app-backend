@@ -4,7 +4,7 @@ import { PartialType, ApiProperty } from '@nestjs/swagger';
 export class CreateTechnologyDto {
   @IsString()
   @IsNotEmpty()
-  @ApiProperty()
+  @ApiProperty({ description: 'El nombre de la tecnología', example: 'React' })
   name: string;
 }
 //PartialType hace que tenga la misma estructura del registerPeopleDTO
