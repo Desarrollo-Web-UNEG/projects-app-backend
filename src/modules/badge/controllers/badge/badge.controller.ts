@@ -8,7 +8,11 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { BadgeService } from '@badge/services/badge.service';
-import { CreateBadgeDto, UpdateBadgeDto } from '@badge/dto/badge.dto';
+import {
+  CreateBadgeDto,
+  UpdateBadgeDto,
+  AssignBadgeDto,
+} from '@badge/dto/badge.dto';
 import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
 import { RolesGuard } from '@auth/guards/roles.guard';
 import { Roles } from '@auth/decorators/roles.decorator';
@@ -58,5 +62,12 @@ export class BadgeController {
   @ApiResponse({ status: 401, description: 'No autorizado.' })
   async updateById(@Param('id') id: number, @Body() changes: UpdateBadgeDto) {
     return this.badgeService.updateById(id, changes);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserType.ADMIN)
+  @Post('assign')
+  async assignBadgeToStudent(@Body() dto: AssignBadgeDto) {
+    return this.badgeService.assignBadgeToStudent(dto);
   }
 }

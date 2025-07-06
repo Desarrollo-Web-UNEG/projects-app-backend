@@ -26,10 +26,10 @@ import { JudgementModule } from '@judgement/judgement.module';
 import { ScoresModule } from '@scores/scores.module';
 import { CategoryModule } from '@category/category.module';
 import { TechnologyModule } from '@technology/technology.module';
+import { BadgeModule } from '@badge/badge.module';
 import { CommentsModule } from '@comments/comments.module';
 import { EvaluationModule } from '@evaluation/evaluation.module';
 import { BadgeModule } from '@badge/badge.module';
-
 
 /**
  * AppModule
@@ -88,6 +88,7 @@ import { BadgeModule } from '@badge/badge.module';
     ]),
     // Módulos de la aplicación.
     AuthModule,
+    BadgeModule,
     PeopleModule,
     SubjectModule,
     AcademicPeriodModule,
