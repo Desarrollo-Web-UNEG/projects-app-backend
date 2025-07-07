@@ -1,14 +1,29 @@
-import { Controller, Post, UploadedFile, UseGuards, UseInterceptors, Request, Get } from '@nestjs/common';
+import { Controller, Post, UploadedFile, UseGuards, UseInterceptors, Request, Get, Body } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
-import { ApiTags, ApiBearerAuth, ApiConsumes, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiBearerAuth, ApiConsumes, ApiBody, ApiUnauthorizedResponse, ApiNotFoundResponse, ApiBadRequestResponse } from '@nestjs/swagger';
 import { CloudinaryStorage } from 'multer-storage-cloudinary';
 import cloudinary from 'src/config/cloudinary.config';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { ProjectFile } from '@people/entities/project-file.entity';
+import { Project } from '@/modules/project/entities/project.entity';
+import { People } from '@people/entities/people.entity';
+import { NotFoundException, UnauthorizedException, BadRequestException } from '@nestjs/common';
 
 @ApiTags('People (Profile)')
 @ApiBearerAuth()
 @Controller('student/file')
 export class StudenFileController {
+  constructor(
+    @InjectRepository(ProjectFile)
+    private readonly projectFileRepository: Repository<ProjectFile>,
+    @InjectRepository(Project)
+    private readonly projectRepository: Repository<Project>,
+    @InjectRepository(People)
+    private readonly peopleRepository: Repository<People>,
+  ) {}
+
   @Post('upload')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(
@@ -52,26 +67,55 @@ export class StudenFileController {
           type: 'string',
           format: 'binary',
         },
+        projectId: {
+          type: 'integer',
+          description: 'ID del proyecto al que pertenece el archivo',
+        },
       },
+      required: ['file', 'projectId'],
     },
   })
-  async uploadFile(@UploadedFile() file: any, @Request() req) {
+  @ApiUnauthorizedResponse({ description: 'Usuario no autenticado o sin id.' })
+  @ApiBadRequestResponse({ description: 'Debe especificar el ID del proyecto.' })
+  @ApiNotFoundResponse({ description: 'Usuario o proyecto no encontrado.' })
+  async uploadFile(@UploadedFile() file: any, @Request() req, @Body() body: any) {
     if (!(req.user as any)?.id) {
-      throw new Error('Usuario no autenticado o sin id.');
+      throw new UnauthorizedException('Usuario no autenticado o sin id.');
     }
-    return {
-      message: 'Archivo subido correctamente',
+    const userId = (req.user as any).id;
+    const projectId = body.projectId;
+    if (!projectId) {
+      throw new BadRequestException('Debe especificar el ID del proyecto.');
+    }
+    const people = await this.peopleRepository.findOne({ where: { id: userId } });
+    if (!people) {
+      throw new NotFoundException('Usuario no encontrado.');
+    }
+    const project = await this.projectRepository.findOne({ where: { id: projectId } });
+    if (!project) {
+      throw new NotFoundException('Proyecto no encontrado.');
+    }
+    const projectFile = this.projectFileRepository.create({
       url: file.path,
       public_id: file.filename,
-      user: (req.user as any).id,
+      format: file.mimetype,
+      bytes: file.size,
+      people: people,
+      project: project,
+    });
+    await this.projectFileRepository.save(projectFile);
+    return {
+      message: 'Archivo subido correctamente',
+      file: projectFile,
     };
   }
 
   @Get('list')
   @UseGuards(JwtAuthGuard)
+  @ApiUnauthorizedResponse({ description: 'Usuario no autenticado o sin id.' })
   async listFiles(@Request() req) {
     if (!(req.user as any)?.id) {
-      throw new Error('Usuario no autenticado o sin id.');
+      throw new UnauthorizedException('Usuario no autenticado o sin id.');
     }
     const userId = (req.user as any).id;
     // Buscar archivos en la carpeta del usuario en Cloudinary
@@ -89,6 +133,50 @@ export class StudenFileController {
         bytes: file.bytes,
       })),
       total: result.total_count,
+    };
+  }
+
+  @Get('projectsfiles')
+  @UseGuards(JwtAuthGuard)
+  @ApiUnauthorizedResponse({ description: 'Usuario no autenticado o sin id.' })
+  async getProjectsWithFiles(@Request() req) {
+    if (!(req.user as any)?.id) {
+      throw new UnauthorizedException('Usuario no autenticado o sin id.');
+    }
+    const userId = (req.user as any).id;
+
+    // Buscar todos los archivos subidos por el usuario, incluyendo el proyecto
+    const files = await this.projectFileRepository.find({
+      where: { people: { id: userId } },
+      relations: ['project'],
+    });
+
+    // Agrupar por proyecto
+    const projectsMap = new Map();
+    files.forEach(file => {
+      const projectId = file.project.id;
+      if (!projectsMap.has(projectId)) {
+        projectsMap.set(projectId, {
+          project: file.project,
+          files: [],
+        });
+      }
+      projectsMap.get(projectId).files.push({
+        id: file.id,
+        url: file.url,
+        public_id: file.public_id,
+        format: file.format,
+        bytes: file.bytes,
+        created_at: file.created_at,
+      });
+    });
+
+    // Solo proyectos con archivos
+    const projectsWithFiles = Array.from(projectsMap.values());
+
+    return {
+      message: 'Proyectos con archivos subidos',
+      projects: projectsWithFiles,
     };
   }
 }
