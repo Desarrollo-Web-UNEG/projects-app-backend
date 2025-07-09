@@ -15,7 +15,12 @@ import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
 import { RolesGuard } from '@auth/guards/roles.guard';
 import { Roles } from '@auth/decorators/roles.decorator';
 import { UserType } from '@people/entities/people.entity';
-import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import {
+  ApiTags,
+  ApiOperation,
+  ApiResponse,
+  ApiBearerAuth,
+} from '@nestjs/swagger';
 
 @ApiTags('Projects')
 @ApiBearerAuth()
@@ -26,7 +31,10 @@ export class ProjectController {
   @UseGuards(JwtAuthGuard)
   @Post()
   @ApiOperation({ summary: 'Crear un nuevo proyecto' })
-  @ApiResponse({ status: 201, description: 'El proyecto ha sido creado exitosamente.' })
+  @ApiResponse({
+    status: 201,
+    description: 'El proyecto ha sido creado exitosamente.',
+  })
   @ApiResponse({ status: 401, description: 'No autorizado.' })
   async create(@Body() createDto: CreateProjectDto, @Request() req) {
     return this.projectService.create(createDto, req.user.id);
@@ -54,9 +62,15 @@ export class ProjectController {
   @UseGuards(JwtAuthGuard)
   @Put(':id')
   @ApiOperation({ summary: 'Actualizar un proyecto por su ID' })
-  @ApiResponse({ status: 200, description: 'El proyecto ha sido actualizado exitosamente.' })
+  @ApiResponse({
+    status: 200,
+    description: 'El proyecto ha sido actualizado exitosamente.',
+  })
   @ApiResponse({ status: 404, description: 'Proyecto no encontrado.' })
-  @ApiResponse({ status: 403, description: 'Acceso denegado (no es el autor o admin).' })
+  @ApiResponse({
+    status: 403,
+    description: 'Acceso denegado (no es el autor o admin).',
+  })
   @ApiResponse({ status: 401, description: 'No autorizado.' })
   async update(
     @Param('id') id: number,
@@ -66,14 +80,16 @@ export class ProjectController {
     return this.projectService.update(+id, updateDto, req.user.id);
   }
 
-  @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(UserType.ADMIN)
+  @UseGuards(JwtAuthGuard)
   @Delete(':id')
-  @ApiOperation({ summary: 'Eliminar un proyecto por su ID (Solo para Admin)' })
-  @ApiResponse({ status: 200, description: 'El proyecto ha sido eliminado exitosamente.' })
+  @ApiOperation({ summary: 'Eliminar un proyecto por su ID' })
+  @ApiResponse({
+    status: 200,
+    description: 'El proyecto ha sido eliminado exitosamente.',
+  })
   @ApiResponse({ status: 404, description: 'Proyecto no encontrado.' })
   @ApiResponse({ status: 401, description: 'No autorizado.' })
   async delete(@Param('id') id: number) {
     return this.projectService.delete(+id);
   }
-} 
+}
