@@ -76,4 +76,12 @@ export class CommentsService {
       throw new NotFoundException(`Comment with ID ${id} not found`);
     }
   }
+
+  async findAllByProject(projectId: number): Promise<Comments[]> {
+    const comments = await this.commentsRepository.find({ where: { id_project: projectId } });
+    if (!comments || comments.length === 0) {
+      throw new NotFoundException('No se encontraron comentarios para este proyecto');
+    }
+    return comments;
+  }
 }
