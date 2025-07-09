@@ -24,10 +24,13 @@ export class EvaluationService {
   ) {}
 
   async create(dto: CreateEvaluationDto): Promise<Evaluation> {
-    const project = await this.projectRepository.findOne({
-      where: { id: dto.projectId },
-    });
-    if (!project) throw new NotFoundException('Proyecto no encontrado');
+    let projects: Project[] = [];
+    if (dto.projectIds && dto.projectIds.length > 0) {
+      projects = await this.projectRepository.findByIds(dto.projectIds);
+      if (projects.length !== dto.projectIds.length) {
+        throw new NotFoundException('Uno o más proyectos no fueron encontrados');
+      }
+    }
 
     const evaluator = await this.peopleRepository.findOne({
       where: { id: String(dto.evaluatorId) },
@@ -38,7 +41,7 @@ export class EvaluationService {
       score: dto.score,
       title: dto.title,
       description: dto.description,
-      project,
+      projects,
       evaluator,
     });
 
@@ -47,14 +50,14 @@ export class EvaluationService {
 
   async findAll(): Promise<Evaluation[]> {
     return this.evaluationRepository.find({
-      relations: ['project', 'evaluator', 'judgements'],
+      relations: ['projects', 'evaluator', 'judgements'],
     });
   }
 
   async findById(id: number): Promise<Evaluation> {
     const evaluation = await this.evaluationRepository.findOne({
       where: { id },
-      relations: ['project', 'evaluator', 'judgements'],
+      relations: ['projects', 'evaluator', 'judgements'],
     });
 
     if (!evaluation) throw new NotFoundException('Evaluación no encontrada');
@@ -64,12 +67,12 @@ export class EvaluationService {
   async updateById(id: number, dto: UpdateEvaluationDto): Promise<Evaluation> {
     const evaluation = await this.findById(id);
 
-    if (dto.projectId) {
-      const project = await this.projectRepository.findOne({
-        where: { id: dto.projectId },
-      });
-      if (!project) throw new NotFoundException('Proyecto no encontrado');
-      evaluation.project = project;
+    if (dto.projectIds) {
+      const projects = await this.projectRepository.findByIds(dto.projectIds);
+      if (projects.length !== dto.projectIds.length) {
+        throw new NotFoundException('Uno o más proyectos no fueron encontrados');
+      }
+      evaluation.projects = projects;
     }
 
     if (dto.evaluatorId) {
