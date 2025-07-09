@@ -52,6 +52,6 @@ export class Project {
   @ManyToOne(() => Category, (cat) => cat.projects)
   category: Category;
 
-  @OneToMany(() => Evaluation, (evaluation) => evaluation.project)
+  @ManyToMany(() => Evaluation, (evaluation) => evaluation.projects)
   evaluations: Evaluation[];
 }

@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsUUID, IsOptional, IsNumber } from 'class-validator';
+import { IsString, IsNotEmpty, IsUUID, IsOptional, IsNumber, IsArray } from 'class-validator';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
 
 export class CreateEvaluationDto {
@@ -27,13 +27,14 @@ export class CreateEvaluationDto {
     })
     description: string;
 
-    @IsNumber()
-    @IsNotEmpty()
+    @IsArray()
+    @IsOptional()
     @ApiProperty({
-        description: 'ID del proyecto que está siendo evaluado',
-        example: 1,
+      description: 'IDs de los proyectos que están siendo evaluados',
+      example: [1, 2],
+      required: false,
     })
-    projectId: number;
+    projectIds?: number[];
 
     @IsNumber()
     @IsNotEmpty()
