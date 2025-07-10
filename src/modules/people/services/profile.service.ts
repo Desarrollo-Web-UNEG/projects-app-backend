@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { People } from '@people/entities/people.entity';
+import { People, UserStatus, UserType } from '@people/entities/people.entity';
 import { UpdatePeopleDto } from '@people/dto/register-people.dto';
 import * as bcrypt from 'bcrypt';
 
@@ -80,5 +80,14 @@ export class ProfileService {
     }
 
     return user;
+  }
+
+  /**
+   * Obtiene estudiantes aprobados
+   */
+  async getApprovedStudents(): Promise<People[]> {
+    return this.peopleRepository.find({
+      where: { status: UserStatus.APPROVED, user_type: UserType.STUDENT },
+    });
   }
 }
