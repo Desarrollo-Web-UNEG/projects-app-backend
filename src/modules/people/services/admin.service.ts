@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { People, UserStatus } from '@people/entities/people.entity';
+import { People, UserStatus, UserType } from '@people/entities/people.entity';
 
 /**
  * Servicio para operaciones administrativas de usuarios
@@ -22,6 +22,31 @@ export class AdminService {
    */
   async getAllUsers(): Promise<People[]> {
     return this.peopleRepository.find({
+      select: {
+        id: true,
+        name: true,
+        last_name: true,
+        email: true,
+        user_type: true,
+        status: true,
+        address: true,
+        birthdate: true,
+        phone_number: true,
+        id_number: true,
+        security_question: true,
+        year_of_creation: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+  }
+
+  /**
+   * Obtiene todos los usuarios de tipo profesor
+   */
+  async getAllProfessors(): Promise<People[]> {
+    return this.peopleRepository.find({
+      where: { user_type: UserType.PROFESSOR },
       select: {
         id: true,
         name: true,
