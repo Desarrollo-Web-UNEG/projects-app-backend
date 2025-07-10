@@ -7,7 +7,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Evaluation } from '../entities/evaluation.entity';
 import { CreateEvaluationDto, UpdateEvaluationDto } from '../dto/evaluation.dto';
-import { Project } from '@project/entities/project.entity';
 import { People } from '@people/entities/people.entity';
 
 @Injectable()
@@ -16,22 +15,11 @@ export class EvaluationService {
     @InjectRepository(Evaluation)
     private readonly evaluationRepository: Repository<Evaluation>,
 
-    @InjectRepository(Project)
-    private readonly projectRepository: Repository<Project>,
-
     @InjectRepository(People)
     private readonly peopleRepository: Repository<People>,
   ) {}
 
   async create(dto: CreateEvaluationDto): Promise<Evaluation> {
-    let projects: Project[] = [];
-    if (dto.projectIds && dto.projectIds.length > 0) {
-      projects = await this.projectRepository.findByIds(dto.projectIds);
-      if (projects.length !== dto.projectIds.length) {
-        throw new NotFoundException('Uno o más proyectos no fueron encontrados');
-      }
-    }
-
     const evaluator = await this.peopleRepository.findOne({
       where: { id: String(dto.evaluatorId) },
     });
@@ -41,7 +29,6 @@ export class EvaluationService {
       score: dto.score,
       title: dto.title,
       description: dto.description,
-      projects,
       evaluator,
     });
 
@@ -50,14 +37,14 @@ export class EvaluationService {
 
   async findAll(): Promise<Evaluation[]> {
     return this.evaluationRepository.find({
-      relations: ['projects', 'evaluator', 'judgements'],
+      relations: ['evaluator', 'judgements'],
     });
   }
 
   async findById(id: number): Promise<Evaluation> {
     const evaluation = await this.evaluationRepository.findOne({
       where: { id },
-      relations: ['projects', 'evaluator', 'judgements'],
+      relations: ['evaluator', 'judgements'],
     });
 
     if (!evaluation) throw new NotFoundException('Evaluación no encontrada');
@@ -66,14 +53,6 @@ export class EvaluationService {
 
   async updateById(id: number, dto: UpdateEvaluationDto): Promise<Evaluation> {
     const evaluation = await this.findById(id);
-
-    if (dto.projectIds) {
-      const projects = await this.projectRepository.findByIds(dto.projectIds);
-      if (projects.length !== dto.projectIds.length) {
-        throw new NotFoundException('Uno o más proyectos no fueron encontrados');
-      }
-      evaluation.projects = projects;
-    }
 
     if (dto.evaluatorId) {
       const evaluator = await this.peopleRepository.findOne({
