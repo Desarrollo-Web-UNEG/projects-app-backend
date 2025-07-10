@@ -80,7 +80,7 @@ export class ProfileController {
   @ApiResponse({ status: 200, description: 'Lista de usuarios pendientes.' })
   @ApiResponse({ status: 401, description: 'No autorizado.' })
   @ApiResponse({ status: 403, description: 'Acceso denegado (no es admin).' })
-  async getPendingStudents() {
+  async getApprovedStudents() {
     return this.profileService.getApprovedStudents();
   }
 }
