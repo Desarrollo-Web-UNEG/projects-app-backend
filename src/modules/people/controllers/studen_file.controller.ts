@@ -11,6 +11,7 @@ import { Project } from '@/modules/project/entities/project.entity';
 import { People } from '@people/entities/people.entity';
 import { NotFoundException, UnauthorizedException, BadRequestException } from '@nestjs/common';
 
+
 @ApiTags('People (Profile)')
 @ApiBearerAuth()
 @Controller('student/file')
@@ -58,7 +59,7 @@ export class StudenFileController {
       limits: { fileSize: 10 * 1024 * 1024 },
     })
   )
-  @ApiConsumes('multipart/form-data')
+  @ApiConsumes('multipart/form-data', 'application/json')
   @ApiBody({
     schema: {
       type: 'object',
@@ -66,13 +67,22 @@ export class StudenFileController {
         file: {
           type: 'string',
           format: 'binary',
+          description: 'Archivo a subir (opcional)',
+        },
+        url: {
+          type: 'string',
+          description: 'URL del enlace (opcional)',
+        },
+        title: {
+          type: 'string',
+          description: 'Título del enlace (opcional)',
         },
         projectId: {
           type: 'integer',
-          description: 'ID del proyecto al que pertenece el archivo',
+          description: 'ID del proyecto (requerido)',
         },
       },
-      required: ['file', 'projectId'],
+      required: ['projectId'],
     },
   })
   @ApiUnauthorizedResponse({ description: 'Usuario no autenticado o sin id.' })
@@ -84,31 +94,81 @@ export class StudenFileController {
     }
     const userId = (req.user as any).id;
     const projectId = body.projectId;
+    
     if (!projectId) {
       throw new BadRequestException('Debe especificar el ID del proyecto.');
     }
+
     const people = await this.peopleRepository.findOne({ where: { id: userId } });
     if (!people) {
       throw new NotFoundException('Usuario no encontrado.');
     }
+
     const project = await this.projectRepository.findOne({ where: { id: projectId } });
     if (!project) {
       throw new NotFoundException('Proyecto no encontrado.');
     }
-    const projectFile = this.projectFileRepository.create({
-      url: file.path,
-      public_id: file.filename,
-      format: file.mimetype,
-      bytes: file.size,
-      people: people,
-      project: project,
-    });
-    await this.projectFileRepository.save(projectFile);
-    return {
-      message: 'Archivo subido correctamente',
-      file: projectFile,
-    };
+
+    const results: Array<{ type: string; message: string; data: any }> = [];
+
+    // Si hay un archivo, procesar como archivo
+    if (file) {
+      const projectFile = this.projectFileRepository.create({
+        url: file.path,
+        public_id: file.filename,
+        format: file.mimetype,
+        bytes: file.size,
+        type: 'file',
+        people: people,
+        project: project,
+      });
+      await this.projectFileRepository.save(projectFile);
+      results.push({
+        type: 'file',
+        message: 'Archivo subido correctamente',
+        data: projectFile,
+      });
+    }
+
+    // Si hay URL, procesar como enlace
+    if (body.url) {
+      const projectLink = this.projectFileRepository.create({
+        url: body.url,
+        type: 'link',
+        people: people,
+        project: project,
+      });
+      await this.projectFileRepository.save(projectLink);
+      results.push({
+        type: 'link',
+        message: 'Enlace guardado correctamente',
+        data: projectLink,
+      });
+    }
+
+    // Si no se proporcionó ni archivo ni URL, lanzar error
+    if (results.length === 0) {
+      throw new BadRequestException('Debe proporcionar al menos un archivo o una URL.');
+    }
+
+    // Retornar resultado apropiado
+    if (results.length === 1) {
+      const result = results[0];
+      return {
+        message: result.message,
+        [result.type === 'file' ? 'file' : 'link']: result.data,
+      };
+    } else {
+      // Si se subieron ambos (archivo y enlace)
+      return {
+        message: 'Archivo y enlace guardados correctamente',
+        file: results.find(r => r.type === 'file')?.data,
+        link: results.find(r => r.type === 'link')?.data,
+      };
+    }
   }
+
+
 
   @Get('list')
   @UseGuards(JwtAuthGuard)
@@ -145,7 +205,7 @@ export class StudenFileController {
     }
     const userId = (req.user as any).id;
 
-    // Buscar todos los archivos subidos por el usuario, incluyendo el proyecto
+    // Buscar todos los archivos y enlaces subidos por el usuario, incluyendo el proyecto
     const files = await this.projectFileRepository.find({
       where: { people: { id: userId } },
       relations: ['project'],
@@ -159,23 +219,32 @@ export class StudenFileController {
         projectsMap.set(projectId, {
           project: file.project,
           files: [],
+          links: [],
         });
       }
-      projectsMap.get(projectId).files.push({
+      
+      const fileData = {
         id: file.id,
         url: file.url,
-        public_id: file.public_id,
-        format: file.format,
-        bytes: file.bytes,
+        type: file.type,
         created_at: file.created_at,
-      });
+      };
+
+      if (file.type === 'link') {
+        projectsMap.get(projectId).links.push(fileData);
+      } else {
+        fileData['public_id'] = file.public_id;
+        fileData['format'] = file.format;
+        fileData['bytes'] = file.bytes;
+        projectsMap.get(projectId).files.push(fileData);
+      }
     });
 
     // Solo proyectos con archivos
     const projectsWithFiles = Array.from(projectsMap.values());
 
     return {
-      message: 'Proyectos con archivos subidos',
+      message: 'Proyectos con archivos y enlaces',
       projects: projectsWithFiles,
     };
   }

@@ -10,14 +10,17 @@ export class ProjectFile {
   @Column()
   url: string;
 
-  @Column()
+  @Column({ nullable: true })
   public_id: string;
 
-  @Column()
+  @Column({ nullable: true })
   format: string;
 
-  @Column()
+  @Column({ nullable: true })
   bytes: number;
+
+  @Column({ default: 'file' })
+  type: string;
 
   @CreateDateColumn()
   created_at: Date;
