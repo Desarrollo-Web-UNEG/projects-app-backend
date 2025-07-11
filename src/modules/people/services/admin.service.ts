@@ -42,11 +42,14 @@ export class AdminService {
   }
 
   /**
-   * Obtiene todos los usuarios de tipo profesor
+   * Obtiene todos los usuarios de tipo profesor que estén aprobados
    */
   async getAllProfessors(): Promise<People[]> {
     return this.peopleRepository.find({
-      where: { user_type: UserType.PROFESSOR },
+      where: { 
+        user_type: UserType.PROFESSOR,
+        status: UserStatus.APPROVED 
+      },
       select: {
         id: true,
         name: true,
