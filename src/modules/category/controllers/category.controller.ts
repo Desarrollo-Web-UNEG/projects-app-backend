@@ -6,6 +6,7 @@ import {
   Put,
   Param,
   UseGuards,
+  Delete,
 } from '@nestjs/common';
 import { CategoryService } from '@category/services/category.service';
 import { CreateCategoryDto, UpdateCategoryDto } from '@category/dto/category.dto';
@@ -58,5 +59,16 @@ export class CategoryController {
   @ApiResponse({ status: 401, description: 'No autorizado.' })
   async updateById(@Param('id') id: string, @Body() updateCategoryDto: UpdateCategoryDto) {
     return this.categoryService.updateById(id, updateCategoryDto);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserType.ADMIN)
+  @Delete(':id')
+  @ApiOperation({ summary: 'Eliminar una categoría por su ID (Solo para administradores)' })
+  @ApiResponse({ status: 200, description: 'La categoría ha sido eliminada exitosamente.' })
+  @ApiResponse({ status: 404, description: 'Categoría no encontrada.' })
+  @ApiResponse({ status: 401, description: 'No autorizado.' })
+  async deleteById(@Param('id') id: string) {
+    return this.categoryService.deleteById(id);
   }
 }
