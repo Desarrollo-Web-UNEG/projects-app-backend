@@ -85,7 +85,6 @@ export class ProfileService {
   }
 
   /**
-
    * Busca un usuario por su cedula
    * @param cedula Cedula del usuario
    */
@@ -119,13 +118,14 @@ export class ProfileService {
     }
 
     return user;
+  }
 
+  /**
    * Obtiene estudiantes aprobados
    */
   async getApprovedStudents(): Promise<People[]> {
     return this.peopleRepository.find({
       where: { status: UserStatus.APPROVED, user_type: UserType.STUDENT },
     });
-
   }
 }
