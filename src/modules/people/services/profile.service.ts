@@ -2,10 +2,11 @@ import {
   Injectable,
   NotFoundException,
   ConflictException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { People } from '@people/entities/people.entity';
+import { People, UserStatus } from '@people/entities/people.entity';
 import { UpdatePeopleDto } from '@people/dto/register-people.dto';
 import * as bcrypt from 'bcrypt';
 
@@ -110,6 +111,10 @@ export class ProfileService {
 
     if (!user) {
       throw new NotFoundException('Usuario no encontrado');
+    }
+
+    if (user.status !== 'approved') {
+      throw new UnauthorizedException('Usuario no aprobado');
     }
 
     return user;
