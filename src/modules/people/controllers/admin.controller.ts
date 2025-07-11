@@ -51,6 +51,18 @@ export class AdminController {
   }
 
   /**
+   * Obtiene todos los usuarios de tipo profesor
+   */
+  @Get('professors')
+  @ApiOperation({ summary: 'Obtener todos los profesores (Solo para Admin)' })
+  @ApiResponse({ status: 200, description: 'Lista de todos los profesores.' })
+  @ApiResponse({ status: 401, description: 'No autorizado.' })
+  @ApiResponse({ status: 403, description: 'Acceso denegado (no es admin).' })
+  async getAllProfessors() {
+    return this.peopleService.getAllProfessors();
+  }
+
+  /**
    * Aprueba un usuario pendiente
    * @param id ID del usuario a aprobar
    */

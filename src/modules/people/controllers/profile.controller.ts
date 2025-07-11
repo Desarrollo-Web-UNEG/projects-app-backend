@@ -83,4 +83,18 @@ export class ProfileController {
   async updateById(@Param('id') id: string, @Body() changes: UpdatePeopleDto) {
     return this.profileService.updateUser(id, changes);
   }
+
+  /**
+   * Obtiene estudiantes aprobados
+   */
+  @Get('approved')
+  @ApiOperation({
+    summary: 'Obtener usuarios pendientes de aprobación (Solo para Admin)',
+  })
+  @ApiResponse({ status: 200, description: 'Lista de usuarios pendientes.' })
+  @ApiResponse({ status: 401, description: 'No autorizado.' })
+  @ApiResponse({ status: 403, description: 'Acceso denegado (no es admin).' })
+  async getApprovedStudents() {
+    return this.profileService.getApprovedStudents();
+  }
 }
