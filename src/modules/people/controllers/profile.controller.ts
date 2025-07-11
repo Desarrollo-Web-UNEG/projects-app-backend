@@ -57,6 +57,20 @@ export class ProfileController {
     return this.profileService.findByEmail(email);
   }
 
+  /**
+   * Obtiene un usuario por su cedula
+   * @param id_number Cedula del usuario a buscar
+   */
+  @UseGuards(JwtAuthGuard)
+  @Get('cedula/:id_number')
+  @ApiOperation({ summary: 'Obtener el perfil de un usuario por su cedula' })
+  @ApiResponse({ status: 200, description: 'Perfil del usuario encontrado.' })
+  @ApiResponse({ status: 404, description: 'Usuario no encontrado.' })
+  @ApiResponse({ status: 401, description: 'No autorizado.' })
+  async getByCedula(@Param('id_number') id_number: string) {
+    return this.profileService.findByCedula(id_number);
+  }
+
   @UseGuards(JwtAuthGuard)
   @Put(':id')
   @ApiOperation({
