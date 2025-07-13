@@ -6,6 +6,7 @@ import {
   Put,
   Param,
   UseGuards,
+  Delete,
 } from '@nestjs/common';
 import { TechnologyService } from '@technology/services/technology.service';
 import {
@@ -64,5 +65,16 @@ export class TechnologyController {
     @Body() changes: UpdateTechnologyDto,
   ) {
     return this.technologyService.updateById(id, changes);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(UserType.ADMIN)
+  @Delete(':id')
+  @ApiOperation({ summary: 'Eliminar una tecnología por su ID (Solo para administradores)' })
+  @ApiResponse({ status: 200, description: 'La tecnología ha sido eliminada exitosamente.' })
+  @ApiResponse({ status: 404, description: 'Tecnología no encontrada.' })
+  @ApiResponse({ status: 401, description: 'No autorizado.' })
+  async deleteById(@Param('id') id: number) {
+    return this.technologyService.deleteById(id);
   }
 }

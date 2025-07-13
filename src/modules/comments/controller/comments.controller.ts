@@ -39,15 +39,16 @@ export class CommentsController {
   }
 
   /**
-   * Maneja las solicitudes GET para obtener todos los comentarios.
-   * @returns Un array de comentarios.
+   * Maneja las solicitudes GET para obtener todos los comentarios de un proyecto específico.
+   * @param projectId El ID del proyecto cuyos comentarios se desean obtener.
+   * @returns Un array de comentarios del proyecto.
    */
-  @Get()
-  @ApiOperation({ summary: 'Obtener todos los comentarios' })
-  @ApiResponse({ status: 200, description: 'Lista de todos los comentarios.' })
-  @ApiResponse({ status: 401, description: 'No autorizado.' })
-  findAll() {
-    return this.commentsService.findAll();
+  @Get('project/:projectId')
+  @ApiOperation({ summary: 'Obtener todos los comentarios de un proyecto' })
+  @ApiResponse({ status: 200, description: 'Lista de comentarios del proyecto.' })
+  @ApiResponse({ status: 404, description: 'Proyecto o comentarios no encontrados.' })
+  findAllByProject(@Param('projectId') projectId: string) {
+    return this.commentsService.findAllByProject(+projectId);
   }
 
   /**

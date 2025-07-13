@@ -87,4 +87,11 @@ export class TechnologyService {
     Object.assign(technology, changes);
     return await this.technologyRepository.save(technology);
   }
+
+  async deleteById(id: number): Promise<string> {
+    const technology = await this.findById(id);
+
+    await this.technologyRepository.remove(technology);
+    return `Se eliminó la tecnología "${technology.name}"`;
+  }
 }

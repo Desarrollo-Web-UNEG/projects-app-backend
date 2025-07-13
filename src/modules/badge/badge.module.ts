@@ -1,11 +1,12 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { BadgeController } from './controllers/badge/badge.controller';
 import { BadgeService } from './services/badge.service';
-import { Badge } from './entities/badge.entity'; 
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Badge } from './entities/badge.entity';
+import { People } from '@people/entities';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Badge])],
+  imports: [TypeOrmModule.forFeature([Badge, People])],
   controllers: [BadgeController],
   providers: [BadgeService],
   exports: [BadgeService],

@@ -12,7 +12,7 @@ export class Category {
   @Column()
   description: string;
 
-  @Column()
+  @Column({nullable:true})
   isActive: boolean;
 
   @OneToMany(() => Project, (project) => project.category)

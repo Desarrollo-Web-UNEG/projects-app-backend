@@ -4,6 +4,7 @@ import {
   Column,
   ManyToOne,
   ManyToMany,
+  JoinTable,
 } from 'typeorm';
 import { Project } from '@project/entities/project.entity';
 import { People } from '@people/entities/people.entity';
@@ -23,8 +24,9 @@ export class Evaluation {
   @Column({ nullable: true })
   description: string;
 
-  @ManyToOne(() => Project, (project) => project.evaluations)
-  project: Project;
+  @ManyToMany(() => Project, (project) => project.evaluations, { nullable: true })
+  @JoinTable()
+  projects: Project[];
 
   @ManyToOne(() => People, (people) => people.evaluations)
   evaluator: People;

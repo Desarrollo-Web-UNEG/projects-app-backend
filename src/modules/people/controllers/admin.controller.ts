@@ -2,19 +2,16 @@ import {
   Controller,
   Get,
   Post,
-  Put,
   Delete,
   Param,
-  Body,
   UseGuards,
 } from '@nestjs/common';
 import { AdminService } from '@people/services';
-import { UpdatePeopleDto } from '@people/dto/register-people.dto';
 import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
 import { RolesGuard } from '@auth/guards/roles.guard';
 import { Roles } from '@auth/decorators/roles.decorator';
 import { UserType } from '@people/entities/people.entity';
-import { ApiTags, ApiOperation, ApiResponse, ApiBody } from '@nestjs/swagger';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
 /**
  * Controlador para operaciones administrativas de usuarios
@@ -43,12 +40,26 @@ export class AdminController {
    * Obtiene usuarios pendientes de aprobación
    */
   @Get('pending')
-  @ApiOperation({ summary: 'Obtener usuarios pendientes de aprobación (Solo para Admin)' })
+  @ApiOperation({
+    summary: 'Obtener usuarios pendientes de aprobación (Solo para Admin)',
+  })
   @ApiResponse({ status: 200, description: 'Lista de usuarios pendientes.' })
   @ApiResponse({ status: 401, description: 'No autorizado.' })
   @ApiResponse({ status: 403, description: 'Acceso denegado (no es admin).' })
   async getPendingUsers() {
     return this.peopleService.getPendingUsers();
+  }
+
+  /**
+   * Obtiene todos los usuarios de tipo profesor
+   */
+  @Get('professors')
+  @ApiOperation({ summary: 'Obtener todos los profesores (Solo para Admin)' })
+  @ApiResponse({ status: 200, description: 'Lista de todos los profesores.' })
+  @ApiResponse({ status: 401, description: 'No autorizado.' })
+  @ApiResponse({ status: 403, description: 'Acceso denegado (no es admin).' })
+  async getAllProfessors() {
+    return this.peopleService.getAllProfessors();
   }
 
   /**
@@ -82,15 +93,15 @@ export class AdminController {
    * @param id ID del usuario a actualizar
    * @param changes Cambios a aplicar
    */
-  @Put(':id')
-  @ApiOperation({ summary: 'Actualizar un usuario por su ID (Solo para Admin)' })
-  @ApiBody({ type: UpdatePeopleDto })
-  @ApiResponse({ status: 200, description: 'Usuario actualizado.' })
-  @ApiResponse({ status: 404, description: 'Usuario no encontrado.' })
-  @ApiResponse({ status: 401, description: 'No autorizado.' })
-  async updateById(@Param('id') id: string, @Body() changes: UpdatePeopleDto) {
-    return this.peopleService.updateUser(id, changes);
-  }
+  // @Put(':id')
+  // @ApiOperation({ summary: 'Actualizar un usuario por su ID (Solo para Admin)' })
+  // @ApiBody({ type: UpdatePeopleDto })
+  // @ApiResponse({ status: 200, description: 'Usuario actualizado.' })
+  // @ApiResponse({ status: 404, description: 'Usuario no encontrado.' })
+  // @ApiResponse({ status: 401, description: 'No autorizado.' })
+  // async updateById(@Param('id') id: string, @Body() changes: UpdatePeopleDto) {
+  //   return this.peopleService.updateUser(id, changes);
+  // }
 
   /**
    * Elimina un usuario
@@ -104,4 +115,4 @@ export class AdminController {
   async deleteById(@Param('id') id: string) {
     return this.peopleService.deleteUser(id);
   }
-} 
+}
