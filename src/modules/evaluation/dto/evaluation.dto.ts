@@ -1,8 +1,7 @@
-import { IsString, IsNotEmpty, IsUUID, IsOptional, IsNumber, IsArray } from 'class-validator';
+import { IsString, IsNotEmpty, IsOptional, IsNumber } from 'class-validator';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
 
 export class CreateEvaluationDto {
-
     @IsNumber() 
     @ApiProperty({
         description: 'Puntuación de la evaluación',
@@ -27,15 +26,6 @@ export class CreateEvaluationDto {
     })
     description: string;
 
-    @IsArray()
-    @IsOptional()
-    @ApiProperty({
-      description: 'IDs de los proyectos que están siendo evaluados',
-      example: [1, 2],
-      required: false,
-    })
-    projectIds?: number[];
-
     @IsNumber()
     @IsNotEmpty()
     @ApiProperty({
@@ -43,7 +33,6 @@ export class CreateEvaluationDto {
         example: 2,
     })
     evaluatorId: number;
-
 }
 
 export class UpdateEvaluationDto extends PartialType(CreateEvaluationDto) {}

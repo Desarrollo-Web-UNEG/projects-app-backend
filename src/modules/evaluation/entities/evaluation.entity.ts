@@ -9,6 +9,7 @@ import {
 import { Project } from '@project/entities/project.entity';
 import { People } from '@people/entities/people.entity';
 import { Judgement } from '@judgement/entities/judgement.entity';
+import { AcademicPeriod } from '@/modules/academic-period/entities/academic-period.entity';
 
 @Entity()
 export class Evaluation {
@@ -24,13 +25,12 @@ export class Evaluation {
   @Column({ nullable: true })
   description: string;
 
-  @ManyToMany(() => Project, (project) => project.evaluations, { nullable: true })
-  @JoinTable()
-  projects: Project[];
-
   @ManyToOne(() => People, (people) => people.evaluations)
   evaluator: People;
 
   @ManyToMany(() => Judgement, (judgement) => judgement.evaluations)
   judgements: Judgement[];
+
+  @ManyToOne(() => AcademicPeriod, { nullable: false })
+  academicPeriod: AcademicPeriod;
 }

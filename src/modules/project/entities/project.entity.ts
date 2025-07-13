@@ -53,9 +53,11 @@ export class Project {
   @ManyToOne(() => Category, (cat) => cat.projects)
   category: Category;
 
+
   @ManyToMany(() => Evaluation, (evaluation) => evaluation.projects)
   evaluations: Evaluation[];
 
   @OneToMany(() => ProjectFile, (file) => file.project)
   files: ProjectFile[];
+
 }
