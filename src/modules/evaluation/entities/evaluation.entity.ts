@@ -33,4 +33,7 @@ export class Evaluation {
 
   @ManyToOne(() => AcademicPeriod, { nullable: false })
   academicPeriod: AcademicPeriod;
+
+  @ManyToMany(() => Project, (project) => project.evaluations)
+  projects: Project[];
 }
