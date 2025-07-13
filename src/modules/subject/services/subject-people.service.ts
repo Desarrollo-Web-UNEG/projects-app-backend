@@ -53,6 +53,18 @@ export class SubjectPeopleService {
     });
     if (!subject) throw new NotFoundException('Materia no encontrada');
 
+    // Evita asignar la misma materia dos veces al mismo estudiante
+    const alreadyAssigned = await this.subjectPeopleRepo.findOne({
+      where: {
+        people: { id: dto.peopleid },
+        subject: { id: dto.subjectid },
+      },
+    });
+    if (alreadyAssigned) {
+      throw new BadRequestException(
+        'El estudiante ya está asignado a esta materia.',
+      );
+    }
     // Validación de requisitos si es estudiante
     if (people.user_type === 'student') {
       if (
