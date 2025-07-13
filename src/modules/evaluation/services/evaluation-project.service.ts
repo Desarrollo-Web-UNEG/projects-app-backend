@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { EvaluationProject } from '../entities/evaluation-project.entity';
@@ -31,6 +31,17 @@ export class EvaluationProjectService {
     if (!project) throw new NotFoundException('Project not found');
     if (!evaluation) throw new NotFoundException('Evaluation not found');
 
+    // VALIDACIÓN DE NOTA NEGATIVA Y NOTA MÁXIMA SEGÚN EVALUATION
+    if (typeof data.score !== 'number') {
+      throw new BadRequestException('La nota es requerida y debe ser un número');
+    }
+    if (data.score < 0) {
+      throw new BadRequestException('La nota no puede ser negativa');
+    }
+    if (data.score > evaluation.score) {
+      throw new BadRequestException(`La nota no puede ser mayor a la nota máxima de la evaluación (${evaluation.score})`);
+    }
+
     const item = this.evaluationProjectRepo.create({
       ...data,
       project,
@@ -40,7 +51,21 @@ export class EvaluationProjectService {
   }
 
   async update(id: number, data: Partial<EvaluationProject>) {
-    await this.findOne(id);
+    const existing = await this.findOne(id);
+    const evaluation = await this.evaluationProjectRepo.manager.findOne(Evaluation, { where: { id: existing.evaluation.id } });
+    if (!evaluation) {
+      throw new NotFoundException('Evaluation not found');
+    }
+    // VALIDACIÓN SOLO SI SE ACTUALIZA EL SCORE
+    if (data.score !== undefined) {
+      if (data.score < 0) {
+        throw new BadRequestException('La nota no puede ser negativa');
+      }
+      if (data.score > evaluation.score) {
+        throw new BadRequestException(`La nota no puede ser mayor a la nota máxima de la evaluación (${evaluation.score})`);
+      }
+    }
+
     await this.evaluationProjectRepo.update(id, data);
     return this.findOne(id);
   }

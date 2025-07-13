@@ -1,4 +1,4 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString, Min} from 'class-validator';
 
 export class CreateEvaluationProjectDto {
   @IsNumber()
@@ -8,6 +8,7 @@ export class CreateEvaluationProjectDto {
   id_evaluation: number;
 
   @IsNumber()
+  @Min(0, { message: 'La nota no puede ser negativa' })
   score: number;
 
   @IsString()
