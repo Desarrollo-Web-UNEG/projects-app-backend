@@ -15,6 +15,7 @@ import { Technology } from '@technology/entities/technology.entity';
 import { Category } from '@category/entities/category.entity';
 import { AcademicPeriod } from '@academic-period/entities/academic-period.entity';
 import { Evaluation } from '@/modules/evaluation/entities/evaluation.entity';
+import { ProjectFile } from '@people/entities/project-file.entity';
 
 @Entity()
 export class Project {
@@ -51,4 +52,12 @@ export class Project {
 
   @ManyToOne(() => Category, (cat) => cat.projects)
   category: Category;
+
+
+  @ManyToMany(() => Evaluation, (evaluation) => evaluation.projects)
+  evaluations: Evaluation[];
+
+  @OneToMany(() => ProjectFile, (file) => file.project)
+  files: ProjectFile[];
+
 }

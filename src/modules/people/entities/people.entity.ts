@@ -14,8 +14,10 @@ import { Badge } from '@badge/entities/badge.entity';
 import { Project } from '@project/entities/project.entity';
 import { Comments } from '@/modules/comments/entities/comments.entity';
 import { Evaluation } from '@/modules/evaluation/entities/evaluation.entity';
+import { ProjectFile } from '@people/entities/project-file.entity';
 import { Subject } from '@/modules/subject/entities/subject.entity';
 import { SubjectPeople } from '@subject/entities/subject-people.entity';
+
 
 export enum UserType {
   STUDENT = 'student',
@@ -112,6 +114,11 @@ export class People {
   @OneToMany(() => Evaluation, (evaluation) => evaluation.evaluator)
   evaluations: Evaluation[];
 
+
+  @OneToMany(() => ProjectFile, (file) => file.people)
+  projectFiles: ProjectFile[];
+
   @OneToMany(() => SubjectPeople, (subjectPeople) => subjectPeople.people)
   subjectPeople: SubjectPeople[];
+
 }

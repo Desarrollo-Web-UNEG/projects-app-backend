@@ -2,10 +2,11 @@ import {
   Injectable,
   NotFoundException,
   ConflictException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { People } from '@people/entities/people.entity';
+import { People, UserStatus, UserType } from '@people/entities/people.entity';
 import { UpdatePeopleDto } from '@people/dto/register-people.dto';
 import * as bcrypt from 'bcrypt';
 
@@ -50,6 +51,7 @@ export class ProfileService {
 
     return this.peopleRepository.save(user);
   }
+
   /**
    * Busca un usuario por su email
    * @param email Email del usuario
@@ -80,5 +82,50 @@ export class ProfileService {
     }
 
     return user;
+  }
+
+  /**
+   * Busca un usuario por su cedula
+   * @param cedula Cedula del usuario
+   */
+  async findByCedula(id_number: string): Promise<People> {
+    const user = await this.peopleRepository.findOne({
+      where: { id_number },
+      select: {
+        id: true,
+        name: true,
+        last_name: true,
+        email: true,
+        user_type: true,
+        status: true,
+        address: true,
+        birthdate: true,
+        phone_number: true,
+        id_number: true,
+        security_question: true,
+        year_of_creation: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+    });
+
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+
+    if (user.status !== 'approved') {
+      throw new UnauthorizedException('Usuario no aprobado');
+    }
+
+    return user;
+  }
+
+  /**
+   * Obtiene estudiantes aprobados
+   */
+  async getApprovedStudents(): Promise<People[]> {
+    return this.peopleRepository.find({
+      where: { status: UserStatus.APPROVED, user_type: UserType.STUDENT },
+    });
   }
 }

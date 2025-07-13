@@ -29,10 +29,7 @@ export class AuthController {
       );
       return this.authService.login(user);
     } catch (error) {
-      if (error instanceof UnauthorizedException) {
-        throw new UnauthorizedException(error.message);
-      }
-      throw error;
+      throw new UnauthorizedException('Credenciales inválidas');
     }
   }
 } 
