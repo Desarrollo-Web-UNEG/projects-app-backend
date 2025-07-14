@@ -53,6 +53,18 @@ export class ProfileService {
   }
 
   /**
+   * Actualiza la contraseña de un usuario
+   */
+  async updateUserPassword(id: string, newPassword: string): Promise<People> {
+    const user = await this.peopleRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+    user.password = await bcrypt.hash(newPassword, 10);
+    return this.peopleRepository.save(user);
+  }
+
+  /**
    * Busca un usuario por su email
    * @param email Email del usuario
    */
