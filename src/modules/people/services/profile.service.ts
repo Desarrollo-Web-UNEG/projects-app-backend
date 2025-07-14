@@ -83,6 +83,7 @@ export class ProfileService {
         phone_number: true,
         id_number: true,
         security_question: true,
+        security_answer: true,
         year_of_creation: true,
         createdAt: true,
         updatedAt: true,

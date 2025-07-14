@@ -131,7 +131,11 @@ export class ProfileController {
     if (!user) {
       throw new NotFoundException('Usuario no encontrado.');
     }
-    if (user.security_answer !== security_answer) {
+    if (
+      !user.security_answer ||
+      !security_answer ||
+      user.security_answer.trim().toLowerCase() !== security_answer.trim().toLowerCase()
+    ) {
       throw new BadRequestException('Respuesta de seguridad incorrecta.');
     }
     await this.profileService.updateUserPassword(user.id, new_password);
