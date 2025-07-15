@@ -78,7 +78,14 @@ export class People {
   security_question: string;
 
   @Column({ type: 'varchar', length: 255, nullable: false })
-  security_answer: string;
+  get security_answer(): string {
+    return this._security_answer;
+  }
+
+  set security_answer(value: string) {
+    this._security_answer = value?.toLowerCase();
+  }
+  private _security_answer: string;
 
   @Column({ type: 'date', nullable: true })
   year_of_creation?: Date;
