@@ -1,4 +1,10 @@
-import { IsString, IsNumber, IsBoolean, IsNotEmpty } from 'class-validator';
+import {
+  IsString,
+  IsNumber,
+  IsBoolean,
+  IsNotEmpty,
+  IsOptional,
+} from 'class-validator';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
 
 export class CreateSubjectPeopleDto {
@@ -14,11 +20,13 @@ export class CreateSubjectPeopleDto {
 
   @IsBoolean()
   @IsNotEmpty()
+  @IsOptional()
   @ApiProperty()
   approved: boolean;
 
   @IsNumber()
   @IsNotEmpty()
+  @IsOptional()
   @ApiProperty()
   mark: number;
 }
