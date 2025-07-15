@@ -9,9 +9,6 @@ async function bootstrap() {
   // Agrega esta línea para ver logs de peticiones HTTP
   app.use(morgan('dev'));
 
-  // Configurar prefijo global para todas las rutas
-  app.setGlobalPrefix('api');
-
   const config = new DocumentBuilder()
     .setTitle('Projects App API')
     .setDescription('API para la gestión de proyectos de la UNEG')
