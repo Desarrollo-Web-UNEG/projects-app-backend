@@ -89,7 +89,7 @@ export class ProfileController {
    */
   @Get('approved')
   @ApiOperation({
-    summary: 'Obtener usuarios pendientes de aprobación (Solo para Admin)',
+    summary: 'Obtener estudiantes aprobados',
   })
   @ApiResponse({ status: 200, description: 'Lista de usuarios pendientes.' })
   @ApiResponse({ status: 401, description: 'No autorizado.' })
