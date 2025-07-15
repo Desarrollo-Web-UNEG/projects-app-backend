@@ -22,8 +22,8 @@ export class SubjectPeople {
   subject: Subject;
 
   @Column({ type: 'boolean', default: false })
-  approved: boolean;
+  approved?: boolean;
 
   @Column({ type: 'int', default: 0 })
-  mark: number;
+  mark?: number;
 }

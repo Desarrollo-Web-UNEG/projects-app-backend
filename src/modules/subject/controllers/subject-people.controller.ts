@@ -2,7 +2,7 @@ import {
   Controller,
   Get,
   Post,
-  Put,
+  Patch,
   Delete,
   Body,
   Param,
@@ -59,10 +59,10 @@ export class SubjectPeopleController {
     return this.subjectPeopleService.assignSubjectToPeople(dto);
   }
 
-  // PUT: Actualizar estado de la materia de ese estudiante
+  // PATCH: Actualizar estado de la materia de ese estudiante
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(UserType.ADMIN)
-  @Put(':id')
+  @Patch(':id')
   async updateSubjectFromPeople(
     @Param('id', ParseIntPipe) id: number,
     @Body() changes: UpdateSubjectPeopleDto,
