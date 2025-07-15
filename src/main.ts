@@ -1,9 +1,13 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from '@/app.module';
+import { AppModule } from './app.module';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as morgan from 'morgan';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  // Agrega esta línea para ver logs de peticiones HTTP
+  app.use(morgan('dev'));
 
   const config = new DocumentBuilder()
     .setTitle('Projects App API')
