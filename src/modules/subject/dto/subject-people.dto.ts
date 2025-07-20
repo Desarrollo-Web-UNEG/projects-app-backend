@@ -4,6 +4,8 @@ import {
   IsBoolean,
   IsNotEmpty,
   IsOptional,
+  Min,
+  Max,
 } from 'class-validator';
 import { PartialType, ApiProperty } from '@nestjs/swagger';
 
@@ -24,9 +26,16 @@ export class CreateSubjectPeopleDto {
   @ApiProperty()
   approved: boolean;
 
+  @IsBoolean()
+  @IsOptional()
+  @ApiProperty()
+  isEnrolled?: boolean;
+
   @IsNumber()
   @IsNotEmpty()
   @IsOptional()
+  @Min(0)
+  @Max(10)
   @ApiProperty()
   mark: number;
 }

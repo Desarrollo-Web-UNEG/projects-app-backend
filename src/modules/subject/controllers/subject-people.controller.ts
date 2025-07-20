@@ -52,6 +52,14 @@ export class SubjectPeopleController {
     );
   }
 
+  // GET: Todas las materias que el estudiante está cursando actualmente
+  @Get(':peopleId/subjects/enrolled')
+  findEnrolledSubjectsByPeople(
+    @Param('peopleId', ParseUUIDPipe) peopleId: string,
+  ) {
+    return this.subjectPeopleService.findEnrolledSubjectsByPeople(peopleId);
+  }
+
   // POST: Asignar materia a persona (estudiante/profesor)
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post()

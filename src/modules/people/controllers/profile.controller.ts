@@ -47,6 +47,21 @@ export class ProfileController {
   }
 
   /**
+   * Obtiene toda la informacion de un estudiante para el dashboard(proyectos, materias que esta cursando y su informacion)
+   * @param id ID del estudiante que se quiere obtener la informacion
+   */
+  @UseGuards(JwtAuthGuard)
+  @Get('dashboard/:id')
+  @ApiOperation({
+    summary: 'Obtener la informacion del dashboard del estudiante',
+  })
+  @ApiResponse({ status: 200, description: 'Informacion del estudiante' })
+  @ApiResponse({ status: 401, description: 'No autorizado.' })
+  async getDashboardStudent(@Param('id') id: string) {
+    return this.profileService.getDashboardStudent(id);
+  }
+
+  /**
    * Obtiene un usuario por su email
    * @param email Email del usuario a buscar
    */
@@ -105,9 +120,29 @@ export class ProfileController {
    * Obtener la pregunta de seguridad de un usuario por email
    */
   @Post('security-question')
-  @ApiOperation({ summary: 'Obtener la pregunta de seguridad de un usuario por email', description: 'Devuelve la pregunta de seguridad asociada al email proporcionado. No requiere autenticación.' })
-  @ApiBody({ schema: { properties: { email: { type: 'string', example: 'usuario@ejemplo.com' } }, required: ['email'] } })
-  @ApiResponse({ status: 200, description: 'Pregunta de seguridad encontrada.', schema: { properties: { security_question: { type: 'string', example: '¿Cuál es el nombre de tu mascota?' } } } })
+  @ApiOperation({
+    summary: 'Obtener la pregunta de seguridad de un usuario por email',
+    description:
+      'Devuelve la pregunta de seguridad asociada al email proporcionado. No requiere autenticación.',
+  })
+  @ApiBody({
+    schema: {
+      properties: { email: { type: 'string', example: 'usuario@ejemplo.com' } },
+      required: ['email'],
+    },
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Pregunta de seguridad encontrada.',
+    schema: {
+      properties: {
+        security_question: {
+          type: 'string',
+          example: '¿Cuál es el nombre de tu mascota?',
+        },
+      },
+    },
+  })
   @ApiResponse({ status: 404, description: 'Usuario no encontrado.' })
   async getSecurityQuestion(@Body('email') email: string) {
     const user = await this.profileService.findByEmail(email);
@@ -121,12 +156,43 @@ export class ProfileController {
    * Restablecer la contraseña usando la pregunta de seguridad
    */
   @Post('reset-password')
-  @ApiOperation({ summary: 'Restablecer la contraseña usando la pregunta de seguridad', description: 'Permite restablecer la contraseña si la respuesta de seguridad es correcta. No requiere autenticación.' })
-  @ApiBody({ schema: { properties: { email: { type: 'string', example: 'usuario@ejemplo.com' }, security_answer: { type: 'string', example: 'mi respuesta' }, new_password: { type: 'string', example: 'nuevaContraseña123' } }, required: ['email', 'security_answer', 'new_password'] } })
-  @ApiResponse({ status: 200, description: 'Contraseña actualizada correctamente.', schema: { properties: { message: { type: 'string', example: 'Contraseña actualizada correctamente.' } } } })
-  @ApiResponse({ status: 400, description: 'Respuesta de seguridad incorrecta.' })
+  @ApiOperation({
+    summary: 'Restablecer la contraseña usando la pregunta de seguridad',
+    description:
+      'Permite restablecer la contraseña si la respuesta de seguridad es correcta. No requiere autenticación.',
+  })
+  @ApiBody({
+    schema: {
+      properties: {
+        email: { type: 'string', example: 'usuario@ejemplo.com' },
+        security_answer: { type: 'string', example: 'mi respuesta' },
+        new_password: { type: 'string', example: 'nuevaContraseña123' },
+      },
+      required: ['email', 'security_answer', 'new_password'],
+    },
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Contraseña actualizada correctamente.',
+    schema: {
+      properties: {
+        message: {
+          type: 'string',
+          example: 'Contraseña actualizada correctamente.',
+        },
+      },
+    },
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Respuesta de seguridad incorrecta.',
+  })
   @ApiResponse({ status: 404, description: 'Usuario no encontrado.' })
-  async resetPassword(@Body('email') email: string, @Body('security_answer') security_answer: string, @Body('new_password') new_password: string) {
+  async resetPassword(
+    @Body('email') email: string,
+    @Body('security_answer') security_answer: string,
+    @Body('new_password') new_password: string,
+  ) {
     const user = await this.profileService.findByEmail(email);
     if (!user) {
       throw new NotFoundException('Usuario no encontrado.');
@@ -134,7 +200,8 @@ export class ProfileController {
     if (
       !user.security_answer ||
       !security_answer ||
-      user.security_answer.trim().toLowerCase() !== security_answer.trim().toLowerCase()
+      user.security_answer.trim().toLowerCase() !==
+        security_answer.trim().toLowerCase()
     ) {
       throw new BadRequestException('Respuesta de seguridad incorrecta.');
     }

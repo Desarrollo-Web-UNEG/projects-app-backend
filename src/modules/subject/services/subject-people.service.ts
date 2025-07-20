@@ -105,6 +105,7 @@ export class SubjectPeopleService {
       people,
       subject,
       approved: dto.approved,
+      isEnrolled: true, // Al asignar, siempre está cursando
     });
     return this.subjectPeopleRepo.save(subjectPeople);
   }
@@ -138,6 +139,10 @@ export class SubjectPeopleService {
       );
     }
     Object.assign(subjectPeople, changes);
+    // Si approved pasa a true, isEnrolled debe pasar a false
+    if (changes.approved === true && subjectPeople.isEnrolled !== false) {
+      subjectPeople.isEnrolled = false;
+    }
     return this.subjectPeopleRepo.save(subjectPeople);
   }
 
@@ -148,5 +153,12 @@ export class SubjectPeopleService {
     if (!subjectPeople) throw new NotFoundException('Relación no encontrada');
     await this.subjectPeopleRepo.remove(subjectPeople);
     return { message: 'Materia removida del usuario correctamente' };
+  }
+
+  async findEnrolledSubjectsByPeople(peopleId: string) {
+    return this.subjectPeopleRepo.find({
+      where: { people: { id: peopleId }, isEnrolled: true },
+      relations: ['subject'],
+    });
   }
 }

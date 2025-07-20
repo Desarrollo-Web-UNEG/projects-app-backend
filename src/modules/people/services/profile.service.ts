@@ -141,4 +141,6 @@ export class ProfileService {
       where: { status: UserStatus.APPROVED, user_type: UserType.STUDENT },
     });
   }
+
+  async getDashboardStudent(id: string) {}
 }
