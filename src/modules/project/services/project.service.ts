@@ -164,4 +164,19 @@ export class ProjectService {
     const project = await this.findById(id);
     await this.projectRepository.remove(project);
   }
+
+  /**
+   * Obtiene todos los proyectos entregados por un estudiante
+   * @param peopleId ID del estudiante
+   */
+  async findByStudent(peopleId: string): Promise<Project[]> {
+    const student = await this.peopleRepository.findOne({ where: { id: peopleId } });
+    if (!student) {
+      throw new NotFoundException(`Estudiante con ID ${peopleId} no encontrado`);
+    }
+    return this.projectRepository.find({
+      where: { people: { id: peopleId } },
+      relations: ['people', 'academicPeriod', 'subject', 'category', 'technologies'],
+    });
+  }
 }
