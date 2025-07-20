@@ -22,6 +22,9 @@ export class ProjectFile {
   @Column({ default: 'file' })
   type: string;
 
+  @Column({ nullable: true })
+  external_link: string;
+
   @CreateDateColumn()
   created_at: Date;
 
