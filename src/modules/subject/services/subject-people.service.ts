@@ -48,6 +48,13 @@ export class SubjectPeopleService {
     });
     if (!people) throw new NotFoundException('Persona no encontrada');
 
+    // Validación: no se pueden asignar materias a usuarios admin
+    if (people.user_type === UserType.ADMIN) {
+      throw new BadRequestException(
+        'No se pueden asignar materias a usuarios administradores.',
+      );
+    }
+
     const subject = await this.subjectRepo.findOne({
       where: { id: dto.subjectid },
     });
