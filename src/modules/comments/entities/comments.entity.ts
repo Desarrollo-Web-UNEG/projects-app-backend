@@ -35,7 +35,7 @@ export class Comments {
   /**
    * Clave foránea que referencia el ID del proyecto al que pertenece este comentario.
    */
-  @Column({ type: 'number' })
+  @Column({ type: 'int' })
   id_project: number;
 
   /**
@@ -43,7 +43,7 @@ export class Comments {
    * Un comentario pertenece a un solo proyecto.
    * El decorador @JoinColumn especifica la columna de unión (clave foránea).
    */
-  @ManyToOne(() => Project, (project) => project.comments)
+  @ManyToOne(() => Project, (project) => project.comments, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'id_project' })
   project: Project;
 
