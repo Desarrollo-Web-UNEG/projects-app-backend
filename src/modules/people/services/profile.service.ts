@@ -155,10 +155,24 @@ export class ProfileService {
       throw new NotFoundException('ID de usuario no proporcionado');
     }
     // Obtener la información del estudiante
-    const user = await this.peopleRepository.findOne({ where: { id } });
+    const user = await this.peopleRepository.findOne({
+      where: { id },
+      select: [
+        'id',
+        'name',
+        'last_name',
+        'user_type',
+        'birthdate',
+        'email',
+        'id_number',
+      ],
+    });
     if (!user) {
       throw new NotFoundException('Usuario no encontrado');
     }
+
+    // Eliminar el campo password antes de retornar
+    // const { password, ...userWithoutPassword } = user;
 
     // Obtener proyectos entregados
     const projects = await this.projectService.findByStudent(id);
