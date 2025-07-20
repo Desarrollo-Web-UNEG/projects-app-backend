@@ -50,6 +50,16 @@ export class ProjectController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('student/:peopleId')
+  @ApiOperation({ summary: 'Obtener todos los proyectos entregados por un estudiante' })
+  @ApiResponse({ status: 200, description: 'Lista de proyectos del estudiante.' })
+  @ApiResponse({ status: 404, description: 'Estudiante no encontrado.' })
+  @ApiResponse({ status: 401, description: 'No autorizado.' })
+  async findByStudent(@Param('peopleId') peopleId: string) {
+    return this.projectService.findByStudent(peopleId);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   @ApiOperation({ summary: 'Obtener un proyecto por su ID' })
   @ApiResponse({ status: 200, description: 'Proyecto encontrado.' })

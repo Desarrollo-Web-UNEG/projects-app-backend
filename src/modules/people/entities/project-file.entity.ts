@@ -28,6 +28,6 @@ export class ProjectFile {
   @ManyToOne(() => People, (people) => people.projectFiles, { eager: true })
   people: People;
 
-  @ManyToOne(() => Project, (project) => project.files, { eager: true })
+  @ManyToOne(() => Project, (project) => project.files, { eager: true, onDelete: 'CASCADE' })
   project: Project;
 } 
