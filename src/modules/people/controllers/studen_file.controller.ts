@@ -1,4 +1,4 @@
-import { Controller, Post, UploadedFile, UseGuards, UseInterceptors, Request, Get, Body } from '@nestjs/common';
+import { Controller, Post, UploadedFile, UseGuards, UseInterceptors, Request, Get, Body, Param, Put } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from '@auth/guards/jwt-auth.guard';
 import { ApiTags, ApiBearerAuth, ApiConsumes, ApiBody, ApiUnauthorizedResponse, ApiNotFoundResponse, ApiBadRequestResponse, ApiOperation, ApiOkResponse, ApiCreatedResponse } from '@nestjs/swagger';
@@ -60,8 +60,8 @@ export class StudenFileController {
     })
   )
   @ApiOperation({
-    summary: 'Subir archivo o enlace a un proyecto',
-    description: `Permite al usuario autenticado subir un archivo o guardar un enlace asociado a un proyecto.\n\nNo es necesario enviar el id del usuario, se toma del token JWT.\n\nPuedes enviar un archivo, un enlace o ambos. El parámetro obligatorio es projectId.`
+    summary: 'Subir archivo a un proyecto',
+    description: `Permite al usuario autenticado subir un archivo y asociar un enlace externo opcional. No es necesario enviar el id del usuario, se toma del token JWT. El parámetro obligatorio es projectId.`
   })
   @ApiConsumes('multipart/form-data', 'application/json')
   @ApiBody({
@@ -71,29 +71,23 @@ export class StudenFileController {
         file: {
           type: 'string',
           format: 'binary',
-          description: 'Archivo a subir (opcional)',
-        },
-        url: {
-          type: 'string',
-          description: 'URL del enlace (opcional)',
-          example: 'https://ejemplo.com/documento',
-        },
-        title: {
-          type: 'string',
-          description: 'Título del enlace (opcional)',
-          example: 'Mi documento',
+          description: 'Archivo a subir (obligatorio)',
         },
         projectId: {
           type: 'integer',
           description: 'ID del proyecto (requerido)',
           example: 1,
         },
+        external_link: {
+          type: 'string',
+          description: 'Enlace externo asociado al archivo (opcional)',
+          example: 'https://drive.google.com/miarchivo',
+        },
       },
-      required: ['projectId'],
+      required: ['projectId', 'file'],
       example: {
         projectId: 1,
-        url: 'https://ejemplo.com/documento',
-        title: 'Mi documento'
+        external_link: 'https://drive.google.com/miarchivo'
       }
     },
   })
@@ -197,6 +191,7 @@ export class StudenFileController {
         type: 'file',
         people: people,
         project: project,
+        external_link: body.external_link,
       });
       await this.projectFileRepository.save(projectFile);
       results.push({
@@ -213,6 +208,7 @@ export class StudenFileController {
         type: 'link',
         people: people,
         project: project,
+        external_link: body.external_link,
       });
       await this.projectFileRepository.save(projectLink);
       results.push({
@@ -374,8 +370,7 @@ export class StudenFileController {
       if (!projectsMap.has(projectId)) {
         projectsMap.set(projectId, {
           project: file.project,
-          files: [],
-          links: [],
+          files: [] as any[],
         });
       }
       
@@ -384,16 +379,13 @@ export class StudenFileController {
         url: file.url,
         type: file.type,
         created_at: file.created_at,
+        external_link: file.external_link,
       };
 
-      if (file.type === 'link') {
-        projectsMap.get(projectId).links.push(fileData);
-      } else {
-        fileData['public_id'] = file.public_id;
-        fileData['format'] = file.format;
-        fileData['bytes'] = file.bytes;
-        projectsMap.get(projectId).files.push(fileData);
-      }
+      fileData['public_id'] = file.public_id;
+      fileData['format'] = file.format;
+      fileData['bytes'] = file.bytes;
+      projectsMap.get(projectId).files.push(fileData);
     });
 
     // Solo proyectos con archivos
@@ -402,6 +394,187 @@ export class StudenFileController {
     return {
       message: 'Proyectos con archivos y enlaces',
       projects: projectsWithFiles,
+    };
+  }
+
+  @Get('projectfile/:projectId')
+  @UseGuards(JwtAuthGuard)
+  @ApiOperation({
+    summary: 'Obtener archivos y enlaces de un proyecto específico del usuario',
+    description: 'Devuelve los archivos y enlaces asociados a un proyecto específico para el usuario autenticado.'
+  })
+  @ApiOkResponse({
+    description: 'Archivos del proyecto',
+    schema: {
+      properties: {
+        files: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'integer', example: 1 },
+              url: { type: 'string', example: 'https://res.cloudinary.com/.../file.pdf' },
+              type: { type: 'string', example: 'file' },
+              public_id: { type: 'string', example: 'file' },
+              format: { type: 'string', example: 'pdf' },
+              bytes: { type: 'integer', example: 123456 },
+              created_at: { type: 'string', example: '2024-05-01T12:00:00Z' },
+              external_link: { type: 'string', example: 'https://drive.google.com/miarchivo' }
+            }
+          }
+        },
+        links: {
+          type: 'array',
+          items: {
+            type: 'object',
+            properties: {
+              id: { type: 'integer', example: 2 },
+              url: { type: 'string', example: 'https://ejemplo.com/documento' },
+              type: { type: 'string', example: 'link' },
+              created_at: { type: 'string', example: '2024-05-01T12:00:00Z' },
+            }
+          }
+        }
+      }
+    }
+  })
+  @ApiUnauthorizedResponse({ description: 'Usuario no autenticado o sin id.' })
+  @ApiNotFoundResponse({ description: 'Proyecto no encontrado o no tiene archivos/enlaces.' })
+  async getProjectFiles(
+    @Request() req,
+    @Param('projectId') projectId: number
+  ) {
+    if (!(req.user as any)?.id) {
+      throw new UnauthorizedException('Usuario no autenticado o sin id.');
+    }
+    const userId = (req.user as any).id;
+
+    // Buscar archivos/enlaces del usuario para ese proyecto
+    const files = await this.projectFileRepository.find({
+      where: { people: { id: userId }, project: { id: projectId } },
+      relations: ['project'],
+    });
+
+    if (!files.length) {
+      throw new NotFoundException('No se encontraron archivos o enlaces para este proyecto.');
+    }
+
+    const result = {
+      files: [] as any[],
+    };
+
+    files.forEach(file => {
+      const fileData = {
+        id: file.id,
+        url: file.url,
+        type: file.type,
+        created_at: file.created_at,
+        external_link: file.external_link,
+      };
+      fileData['public_id'] = file.public_id;
+      fileData['format'] = file.format;
+      fileData['bytes'] = file.bytes;
+      result.files.push(fileData);
+    });
+
+    return result;
+  }
+
+  @Put('projectfile/:fileId')
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: new CloudinaryStorage({
+        cloudinary: cloudinary,
+        params: async (req, file) => {
+          const userId = (req.user as any).id;
+          return {
+            folder: `students/${userId}`,
+            resource_type: 'auto',
+            public_id: file.originalname.split('.')[0],
+          };
+        },
+      }),
+      fileFilter: (req, file, cb) => {
+        const allowedTypes = [
+          'application/pdf',
+          'application/msword',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+          'application/zip',
+          'application/x-rar-compressed',
+          'image/png',
+          'image/jpeg',
+        ];
+        if (allowedTypes.includes(file.mimetype)) {
+          cb(null, true);
+        } else {
+          cb(new Error('Tipo de archivo no permitido'), false);
+        }
+      },
+      limits: { fileSize: 10 * 1024 * 1024 },
+    })
+  )
+  @ApiOperation({
+    summary: 'Editar archivo de un proyecto',
+    description: 'Permite al usuario autenticado actualizar un archivo y/o su enlace externo asociado.'
+  })
+  @ApiConsumes('multipart/form-data', 'application/json')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: { type: 'string', format: 'binary', description: 'Nuevo archivo (opcional)' },
+        external_link: { type: 'string', description: 'Nuevo enlace externo (opcional)' }
+      }
+    }
+  })
+  @ApiOkResponse({ description: 'Archivo o enlace actualizado correctamente' })
+  @ApiUnauthorizedResponse({ description: 'Usuario no autenticado o sin id.' })
+  @ApiNotFoundResponse({ description: 'Archivo o enlace no encontrado.' })
+  async updateProjectFile(
+    @Param('fileId') fileId: number,
+    @UploadedFile() file: any,
+    @Body() body: any,
+    @Request() req
+  ) {
+    if (!(req.user as any)?.id) {
+      throw new UnauthorizedException('Usuario no autenticado o sin id.');
+    }
+    const userId = (req.user as any).id;
+
+    // Buscar el archivo/enlace por fileId y que pertenezca al usuario
+    const projectFile = await this.projectFileRepository.findOne({
+      where: { id: fileId, people: { id: userId } },
+      relations: ['people', 'project'],
+    });
+    if (!projectFile) {
+      throw new NotFoundException('Archivo o enlace no encontrado.');
+    }
+
+    // Si es archivo y se sube uno nuevo, reemplazar datos
+    if (file && projectFile.type === 'file') {
+      projectFile.url = file.path;
+      projectFile.public_id = file.filename;
+      projectFile.format = file.mimetype;
+      projectFile.bytes = file.size;
+      if (body.external_link) {
+        projectFile.external_link = body.external_link;
+      }
+    }
+
+    // Si es enlace y se envía nueva URL
+    if (body.url && projectFile.type === 'link') {
+      projectFile.url = body.url;
+      if (body.external_link) {
+        projectFile.external_link = body.external_link;
+      }
+    }
+
+    await this.projectFileRepository.save(projectFile);
+
+    return {
+      message: 'Archivo o enlace actualizado correctamente',
+      data: projectFile,
     };
   }
 }
