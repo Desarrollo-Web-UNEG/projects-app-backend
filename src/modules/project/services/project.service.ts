@@ -161,7 +161,18 @@ export class ProjectService {
    * @param id ID del proyecto
    */
   async delete(id: number): Promise<void> {
-    const project = await this.findById(id);
+    const project = await this.projectRepository.findOne({
+      where: { id },
+      relations: [
+        'people',
+        'academicPeriod',
+        'subject',
+        'category',
+      ],
+    });
+    if (!project) {
+      throw new NotFoundException(`Project with ID ${id} not found`);
+    }
     await this.projectRepository.remove(project);
   }
 

@@ -35,7 +35,7 @@ export class Comments {
   /**
    * Clave foránea que referencia el ID del proyecto al que pertenece este comentario.
    */
-  @Column({ type: 'number' })
+  @Column({ type: 'int' })
   id_project: number;
 
   /**

@@ -90,7 +90,7 @@ export class ProjectController {
     return this.projectService.update(+id, updateDto, req.user.id);
   }
 
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Delete(':id')
   @ApiOperation({ summary: 'Eliminar un proyecto por su ID' })
   @ApiResponse({
