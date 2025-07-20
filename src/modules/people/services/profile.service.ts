@@ -9,6 +9,8 @@ import { Repository } from 'typeorm';
 import { People, UserStatus, UserType } from '@people/entities/people.entity';
 import { UpdatePeopleDto } from '@people/dto/register-people.dto';
 import * as bcrypt from 'bcrypt';
+import { ProjectService } from '@project/services/project.service';
+import { SubjectPeopleService } from '@subject/services/subject-people.service';
 
 /**
  * Servicio para la gestión de perfiles de usuario
@@ -18,6 +20,8 @@ export class ProfileService {
   constructor(
     @InjectRepository(People)
     private peopleRepository: Repository<People>,
+    private readonly projectService: ProjectService,
+    private readonly subjectPeopleService: SubjectPeopleService,
   ) {}
 
   /**
@@ -140,5 +144,49 @@ export class ProfileService {
     return this.peopleRepository.find({
       where: { status: UserStatus.APPROVED, user_type: UserType.STUDENT },
     });
+  }
+
+  /**
+   * Obtiene dashboard de estudiante
+   */
+  async getDashboardStudent(id: string) {
+    // Validar que el id no sea vacío o nulo
+    if (!id) {
+      throw new NotFoundException('ID de usuario no proporcionado');
+    }
+    // Obtener la información del estudiante
+    const user = await this.peopleRepository.findOne({
+      where: { id },
+      select: [
+        'id',
+        'name',
+        'last_name',
+        'user_type',
+        'birthdate',
+        'email',
+        'id_number',
+      ],
+    });
+    if (!user) {
+      throw new NotFoundException('Usuario no encontrado');
+    }
+
+    // Eliminar el campo password antes de retornar
+    // const { password, ...userWithoutPassword } = user;
+
+    // Obtener proyectos entregados
+    const projects = await this.projectService.findByStudent(id);
+    const projectsCount = projects.length;
+
+    // Obtener materias cursando actualmente
+    const enrolledSubjects =
+      await this.subjectPeopleService.findEnrolledSubjectsByPeople(id);
+    const enrolledSubjectsCount = enrolledSubjects.length;
+
+    return {
+      user,
+      projectsCount,
+      enrolledSubjectsCount,
+    };
   }
 }

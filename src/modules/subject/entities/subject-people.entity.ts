@@ -26,4 +26,7 @@ export class SubjectPeople {
 
   @Column({ type: 'int', default: 0 })
   mark?: number;
+
+  @Column({ type: 'boolean', default: true })
+  isEnrolled?: boolean;
 }
