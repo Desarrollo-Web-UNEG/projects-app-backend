@@ -9,14 +9,23 @@ import { AuthService } from '@people/services';
 import { StudenFileController } from '@people/controllers/studen_file.controller';
 import { ProjectFile } from '@people/entities/project-file.entity';
 import { Project } from '../project/entities/project.entity';
+import { ProjectModule } from '@project/project.module';
+import { SubjectModule } from '@subject/subject.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([People]),
     TypeOrmModule.forFeature([ProjectFile]),
     TypeOrmModule.forFeature([Project]),
+    ProjectModule,
+    SubjectModule,
   ],
-  controllers: [AuthController, ProfileController, AdminController, StudenFileController],
+  controllers: [
+    AuthController,
+    ProfileController,
+    AdminController,
+    StudenFileController,
+  ],
   providers: [AuthService, ProfileService, AdminService],
   exports: [AuthService, ProfileService, AdminService],
 })

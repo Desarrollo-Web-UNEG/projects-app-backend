@@ -34,8 +34,8 @@ export class CreateSubjectPeopleDto {
   @IsNumber()
   @IsNotEmpty()
   @IsOptional()
-  @Min(0)
-  @Max(10)
+  @Min(0, { message: 'La nota no puede ser negativa' })
+  @Max(10, { message: 'La nota no puede exceder de 10' })
   @ApiProperty()
   mark: number;
 }
